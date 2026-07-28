@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@bettergov/kapwa/styles';
+
+@plugin '@tailwindcss/typography';
+
+/* Let Tailwind scan Kapwa's compiled components for utility classes. */
+@source '../../node_modules/@bettergov/kapwa/dist';
+
+/*
+ * The Tandag semantic color scale belongs here, as an @theme block declaring
+ * the primary / secondary / accent / success / warning / error / neutral ramps.
+ * It is deliberately not filled in yet: the ramp is derived from
+ * `portal.brandColor` in config/lgu.config.json, which does not exist yet.
+ * See context/design-system.md before adding it.
+ */
