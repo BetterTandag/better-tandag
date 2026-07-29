@@ -8,9 +8,981 @@
 @source '../../node_modules/@bettergov/kapwa/dist';
 
 /*
- * The Tandag semantic color scale belongs here, as an @theme block declaring
- * the primary / secondary / accent / success / warning / error / neutral ramps.
- * It is deliberately not filled in yet: the ramp is derived from
- * `portal.brandColor` in config/lgu.config.json, which does not exist yet.
- * See context/design-system.md before adding it.
+ * Dark mode is driven by an explicit attribute, not prefers-color-scheme:
+ * the design ships a persisting user toggle, and a media query has no way to
+ * express "the OS says dark, the user chose light". The OS preference is still
+ * honoured — it is resolved to this attribute before first paint by the init
+ * script in src/app/layout.tsx.
+ *
+ * Declared AFTER the Kapwa import so it governs our utilities. Kapwa's own
+ * `@custom-variant dark (&:is(.dark *))` is baked into its precompiled CSS, so
+ * <html> carries BOTH data-theme="dark" and class="dark" — see layout.tsx.
  */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ==========================================================================
+   Layer 1 — ramps and named palette values. Theme-independent.
+   ========================================================================== */
+
+@theme {
+  /* --- primary: anchored on portal.brandColor (#0032A0) in lgu.config.json --- */
+  --color-primary-50: #eef3fc;
+  --color-primary-100: #d8e2f7;
+  --color-primary-200: #b4c8ef;
+  --color-primary-300: #8cb4ff;
+  --color-primary-400: #4e7bd6;
+  --color-primary-500: #2557be;
+  --color-primary-600: #0b41ae;
+  --color-primary-700: #0032a0; /* BRAND ANCHOR */
+  --color-primary-800: #00258c;
+  --color-primary-900: #00205c;
+  --color-primary-950: #000b1f;
+
+  /* --- accent: the Tandag sun --- */
+  --color-accent-50: #fefbea;
+  --color-accent-100: #fdf3c4;
+  --color-accent-200: #fae78a;
+  --color-accent-300: #f6d948;
+  --color-accent-400: #f2c81d;
+  --color-accent-500: #d4ac0c;
+  --color-accent-600: #b69105;
+  --color-accent-700: #9e7c05; /* display sizes only (>=24px) — 3.58:1 on page */
+  --color-accent-800: #8a6b04; /* body-size-safe gold — 4.56:1 on page */
+  --color-accent-900: #6f5603;
+  --color-accent-950: #453503;
+
+  /* --- neutral: warm grey over the #F6F4EF paper --- */
+  --color-neutral-50: #ffffff;
+  --color-neutral-75: #fbfaf7;
+  --color-neutral-100: #f6f4ef;
+  --color-neutral-200: #e7e5e0;
+  --color-neutral-300: #dad9d5; /* decorative border */
+  --color-neutral-400: #a9a8a5;
+  --color-neutral-500: #7e8083; /* CONTROL border — 3.60:1 on page */
+  --color-neutral-600: #6b6d70; /* tertiary ink — 4.72:1 on page */
+  --color-neutral-700: #4a4d52; /* secondary ink — 7.72:1 on page */
+  --color-neutral-800: #2a2d33;
+  --color-neutral-900: #101318;
+  --color-neutral-950: #06080b;
+
+  /* --- status ramps: declared for completeness, not exercised by this page --- */
+  --color-success-100: #d9f2e3;
+  /*
+   * The luminous step. It exists for one job: "Cost to the People of Tandag =
+   * ₱0" on the footer ground, where the whole point is that the number reads
+   * as a positive signal from across the room. 10.84:1 on #111111, and 7.93:1
+   * on the success-900 pill it sits in. Do NOT use it on a light surface —
+   * it is 1.59:1 on the page paper, which is not a colour, it is a rumour.
+   */
+  --color-success-400: #4ade80;
+  --color-success-700: #0f6b3d;
+  --color-success-900: #08341e;
+  --color-warning-100: #fdf3c4;
+  --color-warning-700: #8a6b04;
+  --color-warning-900: #453503;
+
+  /*
+   * --- error: the only ramp that IS exercised, by the hotline ticker ---
+   *
+   * 100 / 700 / 900 are unchanged; 200-600, 800 and 950 were added to fill the
+   * ramp rather than invent a one-off maroon for the bar. Luminance is
+   * monotonic across the whole scale (0.792 → 0.004), so the steps compose the
+   * way a ramp is supposed to.
+   *
+   * Every ratio below is measured against `error-950`, the ticker ground:
+   *
+   *   error-200  12.71:1   the number — "a dimmer tone", still AA at 11px
+   *   error-400   6.47:1   the "Emergency hotlines" accent label
+   *   error-600   3.08:1   the `·` separator (decorative, aria-hidden)
+   *   white      19.32:1   the organisation label
+   *   accent-400 12.01:1   the focus ring inherited from data-surface=inverse
+   *
+   * The reference portal draws the same bar in white-alpha, where the number
+   * lands at 5.28:1 and the separator at 1.48:1. These are opaque instead, for
+   * the same reason the footer's line roles are — an alpha value's contrast
+   * depends on what it happens to be laid over.
+   */
+  --color-error-100: #fbe0e0;
+  --color-error-200: #f6c6c6;
+  --color-error-300: #eda3a3;
+  --color-error-400: #e57373;
+  --color-error-500: #cc4a4a;
+  --color-error-600: #b82626;
+  --color-error-700: #a11212;
+  --color-error-800: #6f0d0d;
+  --color-error-900: #4d0909;
+  --color-error-950: #1f0606;
+
+  /*
+   * --- named surface/ink values with no ramp home ---
+   * The dark-theme and always-inverse families. Named tokens, not ramp steps:
+   * they are a colour set, not a monotonic scale. Never used directly in
+   * markup — only by the role tokens below.
+   */
+  --color-surface-night: #04122e;
+  --color-surface-night-raised: #0a1e44;
+  --color-surface-night-sunken: #0c2450;
+  --color-surface-night-tint: #101f3e;
+  --color-surface-night-band: #123a78;
+  --color-surface-night-deep: #0b1b33;
+  --color-surface-day-tint: #edf1f8;
+  /*
+   * The footer ground. Fixed in BOTH themes, so unlike every other surface
+   * here it needs no role indirection — there is nothing for the theme to flip
+   * it to. Used directly as `bg-surface-footer`; the ink and link roles on top
+   * of it come from the `[data-surface='inverse']` scope, and the two line
+   * roles are re-pointed by `[data-ground='footer']` further down, because
+   * white-alpha lines composite to ~1.4:1 on a ground this dark.
+   */
+  --color-surface-footer: #111111;
+
+  --color-ink-night: #f5f3ee;
+  --color-ink-night-secondary: #afb3bb;
+  --color-ink-night-tertiary: #8c96a7;
+  --color-ink-inverse: #ffffff;
+  --color-ink-inverse-muted: #bfc9da; /* replaces SEVEN white-alpha values */
+  --color-ink-band-muted: #b3c2e3; /* stat band captions, both themes */
+
+  /* The mark's sun is the PHILIPPINE FLAG yellow, which is not the portal's
+     accent. #fcd116 is the flag's official value; --color-accent-400 (#f2c81d)
+     is the Tandag sun the page is themed in. They are close enough to look like
+     a mistake and far enough apart to be one, so the mark carries its own
+     token. See brand/logo/. */
+  --color-mark-sun-flag: #fcd116;
+
+  --color-line-day-subtle: #edebe7;
+  --color-line-night: #2f4060;
+  --color-line-night-subtle: #1b2c4c;
+  --color-line-night-control: #6478a3;
+  --color-line-inverse: #3a4a66;
+
+  /* --- type --- */
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-sans);
+  --font-serif: var(--font-instrument), Georgia, serif;
+  /* The wordmark only — Inter, which Kapwa ships as --font-kapwa-sans and which
+     every Better<LGU>.org mark is set in. Scoped to the mark rather than
+     promoted to --font-sans: the network shares a wordmark, not a body face. */
+  --font-wordmark: var(--font-kapwa-sans), var(--font-sans);
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-hero: clamp(2.375rem, 5vw, 4.25rem);
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.035em;
+  /*
+   * The hero's city line, set larger than the two words above it so it reads as
+   * the destination rather than a third word in a list.
+   *
+   * Every stop is `--text-hero` x 1.48, which is what puts the rendered city
+   * name at ~70% of the rendered width of "Dayon. Padayon." — measured, not
+   * guessed: the two strings are 3.56em and 7.53em wide respectively, so the
+   * width ratio is NOT the font-size ratio. The 3.5rem floor is what keeps the
+   * name inside the 256px measure at 320px, where the line above it wraps.
+   */
+  --text-hero-city: clamp(3.5rem, 7.4vw, 6.3rem);
+  --text-hero-city--line-height: 0.98;
+  --text-hero-city--letter-spacing: -0.04em;
+  --text-section: clamp(1.75rem, 3.4vw, 2.75rem);
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.03em;
+  --text-feature: clamp(1.625rem, 3vw, 2.25rem);
+  --text-feature--line-height: 1.08;
+  --text-feature--letter-spacing: -0.03em;
+  --text-cta: clamp(1.5rem, 2.8vw, 2.125rem);
+  --text-cta--line-height: 1.1;
+  --text-cta--letter-spacing: -0.03em;
+  --text-stat: clamp(2rem, 4vw, 2.625rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.03em;
+  /*
+   * The promoted emergency number, sized to FILL the height of the cell it sits
+   * in rather than to sit level with the section headings.
+   *
+   * `cqh` is the only honest unit for "as tall as its box", and it needs
+   * `container-type: size`, which needs a height that does NOT come from the
+   * contents. The call band supplies one: the number's cell spans all three rows
+   * of the band's grid, and those rows are sized by the LEFT column (label,
+   * role, citation). Size containment removes the number from its own cell's
+   * sizing, so there is no cycle — and it is also why the cell has to sit in a
+   * `1fr` track. In the old `auto` track a size-contained item reports a
+   * max-content width of 0 and the whole column collapses.
+   *
+   * Below `sm` the band is ONE column and nothing external sets the row height,
+   * so the container is not applied there and the number keeps `--text-section`.
+   * Applying it anyway is exactly the collapse-to-zero case.
+   *
+   * 132cqh, not 100cqh: `cqh` sizes the EM box, and what has to fill the cell is
+   * the rendered DIGIT, which is smaller. Measured off the shipped font rather
+   * than assumed — canvas `TextMetrics` for "911" in Space Grotesk Bold gives
+   * 0.7356 x font-size of ink (cap height plus the curved overshoot on the 9),
+   * so 1/0.7356 = 1.360 draws the digits exactly edge to edge. 138 was tried
+   * first, from the nominal 0.70 cap ratio, and overshot: 69px of ink in a 68px
+   * cell. 1.32 lands it at 97.1%, which reads as filling the cell with a pixel
+   * of air top and bottom instead of a pixel of clipping.
+   *
+   * `min(…, 50cqi)` is the width guard, and it is the term that binds on a
+   * narrow band.
+   *
+   * It was 60cqi, from a measurement of "911" at 1.522em. That figure was taken
+   * WITHOUT `tabular-nums`, and the element sets it: Space Grotesk's tabular
+   * figures are wider than its proportional ones, and the number actually
+   * renders at 1.86em. 60cqi therefore asked for 1.86 x 0.60 = 112% of the
+   * cell, and the digits broke out of it — measured across 640-767px, worst at
+   * Filipino 740px, where 290px of ink sat in a 260px cell and the band picked
+   * up 6px of its own horizontal scroll. (The page never overflowed, which is
+   * why the 320-1280 scroll checks never saw it.)
+   *
+   * 1/1.86 = 53.8cqi is the exact fit; 50 keeps ~7% in hand. Desktop is
+   * untouched — from 768px up the `cqh` term is the smaller of the two and
+   * still binds, so the number stays at the same 89.8px it was.
+   */
+  --text-callband: clamp(2rem, min(132cqh, 50cqi), 11rem);
+  --text-callband--line-height: 1;
+  /*
+   * `normal`, and it has to be declared rather than omitted. The element also
+   * carries `text-section` for the sub-`sm` fallback, and that token's -0.03em
+   * would otherwise still apply here — at 90px that is -2.7px per gap, and
+   * Space Grotesk's tabular "1" carries its flag out to the left, so the 9 and
+   * the 1 of "911" visibly collide. Confirmed by rendering it, not by reading
+   * the number: display sizes do usually want negative tracking, and this one
+   * does not.
+   */
+  --text-callband--letter-spacing: normal;
+  /*
+   * The same number BELOW `sm`, where the container query cannot apply — the
+   * band is one column there and nothing external sets the row height, so
+   * `cqh` has no box to measure and `container-type: size` would collapse the
+   * cell to zero.
+   *
+   * It used to fall back to `--text-section`, which floors at 28px: 31% of the
+   * 89.8px the number renders at from 768px up. The emergency line was the
+   * smallest it ever gets on the devices most likely to be used to dial it.
+   * 3.9375rem is 63px — 70.2% of that 89.8px, measured rather than assumed.
+   *
+   * Fixed rather than fluid on purpose. The band is a single column here, so
+   * the number competes with nothing for width, and "911" sets ~96px at this
+   * size inside the 224px the band has at 320px. A clamp would only make the
+   * ratio drift across the four phone widths for no gain.
+   *
+   * `normal` tracking for the same reason as the token above: at 63px the
+   * inherited -0.03em would put -1.9px in every gap and Space Grotesk's tabular
+   * "1" carries its flag far enough left that the 9 and the 1 touch.
+   */
+  --text-callband-compact: 3.9375rem;
+  --text-callband-compact--line-height: 1;
+  --text-callband-compact--letter-spacing: normal;
+  /*
+   * The footer's cost line — "Cost to the People of Tandag = ₱0" — which has to
+   * hold ONE line at every width from 320px up.
+   *
+   * Fluid like `--text-hero-city`, but measured against its CONTAINER, not the
+   * viewport. A `vw` clamp cannot do this job: the room this line has does not
+   * grow with the viewport, it *drops* — the footer is one column below `sm`,
+   * two at `sm`, and four at `xl`, so the Contribute column is at its NARROWEST
+   * at 1280px, narrower than it ever is on a phone. `cqi` follows the column
+   * itself, so every one of those steps is handled by one expression. The
+   * column carries Tailwind's `@container` for this and nothing else.
+   *
+   * The four columns are EQUAL — Contribute no longer spans two — and the pill
+   * is `w-full`, so the pill's width is the column's width and matches the two
+   * buttons below it exactly. That is the whole reason the four-column step was
+   * pushed from `lg` to `xl`: a quarter of an 80% measure is ~181px at a 1024px
+   * viewport and ~232px at 1280px, and the type this expression yields at 181px
+   * (7.8px) is not readable by anyone. Two ~394px columns at 1024px are.
+   *
+   * The divisor is the MEASURED width of the string in em, plus headroom, not
+   * a guess. In Space Grotesk Bold the English line is 16.531em wide and the
+   * Filipino "Halaga sa Mamamayan ng Tandag = ₱0" is 18.814em, so Filipino is
+   * the binding case and 19.2 is that plus ~2%. `2rem` is the pill's own
+   * `px-4`, subtracted before the division because the padding is fixed while
+   * the type is not.
+   *
+   * Rendered against the real footer, Filipino clears its column by 3.0–5.6px
+   * at every one of 320 / 390 / 768 / 1024 / 1280 / 1440.
+   *
+   * The floor is a guard, not a size anyone should hit: it only engages if the
+   * column ever falls below ~147px, which the current footer never does. The
+   * ceiling is the same in reverse. What actually renders is the middle term.
+   */
+  --text-cost: clamp(0.375rem, calc((100cqi - 2rem) / 19.2), 1.125rem);
+  --text-cost--line-height: 1.25;
+  /*
+   * There is no `--text-emergency` any more. The national line was set at
+   * clamp(5.5rem, 18vw, 11rem) — the largest type on the site by a wide margin
+   * — and was reduced to `--text-section` so it sits level with "Getting to
+   * Tandag" and "When the river rises". The token had exactly one call site,
+   * so it was deleted rather than left to rot.
+   */
+
+  --tracking-eyebrow: 0.16em;
+  --tracking-label: 0.14em;
+  --tracking-caps: 0.1em;
+
+  /* --- layout & motion --- */
+  --container-portal: 71.25rem; /* 1140px */
+  --ease-portal: cubic-bezier(0.2, 0.9, 0.3, 1);
+
+  --animate-drop-in: drop-in 0.5s var(--ease-portal) both;
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+
+  @keyframes drop-in {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes reveal-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.375rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ==========================================================================
+   Layer 2 — role tokens. These are what flips with the theme.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --surface-page: var(--color-neutral-100);
+  --surface-raised: var(--color-neutral-50);
+  --surface-sunken: var(--color-neutral-75);
+  --surface-tint: var(--color-surface-day-tint);
+  --surface-band: var(--color-primary-700);
+  --surface-inverse: var(--color-surface-night-deep);
+  --surface-inverse-deep: var(--color-primary-900);
+
+  --ink: var(--color-neutral-900);
+  --ink-secondary: var(--color-neutral-700);
+  --ink-tertiary: var(--color-neutral-600);
+  --ink-link: var(--color-primary-700);
+  --ink-link-hover: var(--color-primary-800);
+  --ink-accent: var(--color-accent-700); /* display sizes only */
+  --ink-accent-strong: var(--color-accent-800); /* body sizes */
+  --ink-on-accent: var(--color-primary-900);
+  --ink-on-band: var(--color-ink-inverse);
+  --ink-on-band-muted: var(--color-ink-band-muted);
+
+  --line: var(--color-neutral-300);
+  --line-subtle: var(--color-line-day-subtle);
+  --line-control: var(--color-neutral-500);
+
+  /* Wash behind icon buttons and pills, on whatever surface they sit. */
+  --surface-control: color-mix(
+    in oklab,
+    var(--color-neutral-900) 7%,
+    transparent
+  );
+
+  --focus-ring: var(--color-primary-800);
+  --shadow-panel-value: 0 26px 54px -32px rgb(0 32 92 / 0.34);
+
+  --hero-wave-opacity: 0.07;
+
+  /* The mark. Two roles rather than fixed fills, so ONE <Logo> renders all
+     three variants the rebrand ships: colour here, colour-on-dark below, and
+     the reversed all-white mark inside [data-surface='inverse']. */
+  --mark-land: var(--color-primary-700);
+  --mark-sun: var(--color-mark-sun-flag);
+
+  /* The wordmark beside the mark. Blue in the header, white on dark grounds —
+     it needs its own role because --ink-link goes GOLD on inverse surfaces,
+     which is right for links and wrong for a wordmark. */
+  --ink-wordmark: var(--color-primary-700);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-page: var(--color-surface-night);
+  --surface-raised: var(--color-surface-night-raised);
+  --surface-sunken: var(--color-surface-night-sunken);
+  --surface-tint: var(--color-surface-night-tint);
+  --surface-band: var(--color-surface-night-band);
+  --surface-inverse: var(--color-surface-night-band);
+  --surface-inverse-deep: var(--color-primary-950);
+
+  --ink: var(--color-ink-night);
+  --ink-secondary: var(--color-ink-night-secondary);
+  --ink-tertiary: var(--color-ink-night-tertiary);
+  --ink-link: var(--color-primary-300);
+  --ink-link-hover: var(--color-accent-400);
+  --ink-accent: var(--color-accent-400);
+  --ink-accent-strong: var(--color-accent-400);
+
+  --line: var(--color-line-night);
+  --line-subtle: var(--color-line-night-subtle);
+  --line-control: var(--color-line-night-control);
+
+  --surface-control: color-mix(in oklab, white 10%, transparent);
+
+  --focus-ring: var(--color-primary-300);
+  --shadow-panel-value: 0 26px 54px -32px rgb(0 0 0 / 0.85);
+
+  /* The hero wave is a light-theme flourish only. */
+  --hero-wave-opacity: 0;
+
+  /* primary-700 is the brand navy, and on the dark page ground (#04122e) it is
+     1.16:1 — the land would vanish. primary-300 is the same move --ink-link
+     already makes in this theme. The sun does not change: flag yellow reads on
+     both grounds. */
+  --mark-land: var(--color-primary-300);
+  /* Same reason as the land: the brand navy is unreadable on this ground. */
+  --ink-wordmark: var(--color-primary-300);
+}
+
+/*
+ * Surface scopes. Every inverse surface is dark in BOTH themes, so one scope
+ * serves them all and `text-ink-secondary` renders correctly inside with no
+ * overrides. This is what removes ~30 colour literals from the markup.
+ */
+[data-surface='inverse'] {
+  --ink: var(--color-ink-inverse);
+  --ink-secondary: var(--color-ink-inverse-muted);
+  --ink-tertiary: var(--color-ink-inverse-muted);
+  --ink-link: var(--color-accent-400);
+  --ink-link-hover: var(--color-ink-inverse);
+  --ink-accent: var(--color-accent-400);
+  --ink-accent-strong: var(--color-accent-400);
+  --line: color-mix(in oklab, white 12%, transparent);
+  --line-subtle: color-mix(in oklab, white 8%, transparent);
+  --line-control: var(--color-line-inverse);
+  --focus-ring: var(--color-accent-400);
+  --surface-raised: color-mix(in oklab, white 8%, transparent);
+  --surface-sunken: color-mix(in oklab, white 5%, transparent);
+  --surface-control: color-mix(in oklab, white 14%, transparent);
+
+  /* The reversed mark. Both shapes go white — this is the variant the rebrand
+     ships as better-tandag-white.svg, and it is why the sun/land clearance is
+     cut in the geometry rather than implied by the two colours. */
+  --mark-land: var(--color-ink-inverse);
+  --mark-sun: var(--color-ink-inverse);
+  --ink-wordmark: var(--color-ink-inverse);
+}
+
+/*
+ * The footer ground refines the inverse scope rather than replacing it.
+ *
+ * #111111 is darker than any other inverse surface on the site, and the shared
+ * white-alpha lines composite to ~1.4:1 on it — a control boundary nobody can
+ * see. Ink, link and accent roles are all fine there (18.89:1, 11.74:1), so
+ * only the two line roles are re-pointed, at OPAQUE neutrals whose contrast is
+ * fixed rather than dependent on what they are laid over. Declared after the
+ * inverse scope so it wins at equal specificity.
+ */
+[data-ground='footer'] {
+  --line: var(--color-neutral-700); /* 2.23:1 — decorative rules */
+  --line-control: var(--color-neutral-600); /* 3.64:1 — control boundaries */
+}
+
+[data-surface='accent'] {
+  --ink: var(--color-ink-on-accent);
+  --ink-secondary: var(--color-ink-on-accent);
+  --ink-tertiary: var(--color-ink-on-accent);
+  --ink-link: var(--color-ink-on-accent);
+  /*
+   * NOT `--ink-on-accent`, which is what `--ink` already resolves to here: a
+   * hover landing on the colour the text is already wearing is no feedback at
+   * all. With the hover underline removed site-wide, colour is the only
+   * channel left, so the accent surface has to actually move. Navy 950 on the
+   * sun yellow is 12.23:1 against 9.59:1 at rest — a visible darkening that
+   * never drops below the resting contrast.
+   */
+  --ink-link-hover: var(--color-primary-950);
+  --line: color-mix(in oklab, var(--color-primary-900) 18%, transparent);
+  --line-control: color-mix(
+    in oklab,
+    var(--color-primary-900) 45%,
+    transparent
+  );
+  --surface-control: color-mix(
+    in oklab,
+    var(--color-primary-900) 12%,
+    transparent
+  );
+  --focus-ring: var(--color-primary-800);
+}
+
+/* ==========================================================================
+   Layer 3 — expose the roles as utilities.
+   `inline` is load-bearing: it emits `var(--surface-page)` into the rule so it
+   resolves AT THE ELEMENT, where [data-theme='dark'] has overridden it. With a
+   plain @theme the light value would be baked onto :root and dark mode would
+   silently do nothing.
+   ========================================================================== */
+
+@theme inline {
+  --color-surface-page: var(--surface-page);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-tint: var(--surface-tint);
+  --color-surface-band: var(--surface-band);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-surface-inverse-deep: var(--surface-inverse-deep);
+  --color-surface-control: var(--surface-control);
+
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  --color-ink-link: var(--ink-link);
+  --color-ink-link-hover: var(--ink-link-hover);
+  --color-ink-accent: var(--ink-accent);
+  --color-ink-accent-strong: var(--ink-accent-strong);
+  --color-ink-on-accent: var(--ink-on-accent);
+  --color-ink-on-band: var(--ink-on-band);
+  --color-ink-on-band-muted: var(--ink-on-band-muted);
+
+  --color-line: var(--line);
+  --color-line-subtle: var(--line-subtle);
+  --color-line-control: var(--line-control);
+  --color-focus-ring: var(--focus-ring);
+
+  --color-mark-land: var(--mark-land);
+  --color-mark-sun: var(--mark-sun);
+  --color-ink-wordmark: var(--ink-wordmark);
+
+  --shadow-panel: var(--shadow-panel-value);
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+/* The approved grid proportions. Tailwind v4 has no theme namespace for
+   grid-template-columns, so these are utilities — `lg:grid-cols-hero` works. */
+@utility grid-cols-hero {
+  grid-template-columns: 1.05fr 0.95fr;
+}
+@utility grid-cols-featured {
+  grid-template-columns: 1.15fr 1fr;
+}
+@utility grid-cols-narrative {
+  grid-template-columns: 1fr 1.4fr;
+}
+@utility grid-cols-hotlines {
+  grid-template-columns: 1.1fr 1fr;
+}
+@utility grid-cols-cta {
+  grid-template-columns: 1.2fr 1fr;
+}
+/* The timeline row: the rail/marker gutter, then the entry. Structural rather
+   than one of the approved proportions above, but it lives here for the same
+   reason — so no component has to carry a `grid-cols-[…]` arbitrary value. */
+@utility grid-cols-timeline {
+  grid-template-columns: auto 1fr;
+}
+/* The promoted emergency band: the label block and the number take half each.
+   Structural, same as the row above — a component carrying `grid-cols-[1fr_1fr]`
+   would be an arbitrary value.
+
+   It was `1fr auto`, sizing the number's column to the number. It cannot stay
+   that way now that the number's cell carries `container-type: size`: size
+   containment makes the cell report a max-content width of 0, and an `auto`
+   track sized from that collapses the column to nothing. A `1fr` track takes
+   its width from the row instead, which is content-independent by definition.
+   See `--text-callband` above. */
+@utility grid-cols-callband {
+  grid-template-columns: 1fr 1fr;
+}
+
+/*
+ * The hero wave. Applied to an absolutely-positioned decorative element with
+ * no children — masking an element masks its descendants too, so this must
+ * never go on a container. The mask SVG carries no brand colour; the colour
+ * comes from the token.
+ */
+@utility hero-wave {
+  background-color: var(--color-primary-700);
+  opacity: var(--hero-wave-opacity);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'%3E%3Cg fill='none' stroke='%23000' stroke-width='0.9' stroke-linecap='round'%3E%3Cpath d='M0 4 q 4.5,-2.5 9,0 t 9,0'/%3E%3Cpath d='M-4.5 9.5 q 4.5,-2.5 9,0 t 9,0 t 9,0'/%3E%3C/g%3E%3C/svg%3E");
+  mask-repeat: repeat;
+  mask-size: 18px 12px;
+}
+
+/*
+ * The page measure: 80% of the viewport, 10% margin each side.
+ *
+ * `max-w-portal` still caps it, so the 80%/10% rule holds exactly up to a
+ * ~1425px viewport and the measure stops widening beyond that — past roughly
+ * 1140px a line of prose runs well past the 65–75 character span this project
+ * targets. Drop `max-width` here to make it literally 80% at every width.
+ */
+/*
+ * The mark, used as a silhouette behind the contact slab.
+ *
+ * Anchored to the bottom-START corner (so it follows the writing direction),
+ * **40% of the section's width**, and pushed down by 30% of its own height so
+ * only the **top 70%** is visible — the section's `overflow-hidden` does the
+ * cropping.
+ *
+ * Sized on the INLINE axis, with `block-size: auto` letting the mark's own 0.94
+ * aspect set the height. Width is the stable axis here: the section's height is
+ * set by its content and changes with the locale (the Filipino placeholder
+ * notice runs longer), so a height-derived silhouette would have breathed with
+ * the copy.
+ *
+ * Percentages resolve against the section's padding box because the section is
+ * the nearest positioned ancestor — no container query, which matters because
+ * `cqh` would need `container-type: size` and the section has no definite
+ * height to give it.
+ */
+@utility contact-mark {
+  /* Named, because the horizontal crop below is a fraction OF THIS. */
+  --contact-mark-inline: 40%;
+
+  position: absolute;
+  inset-block-end: 0;
+  inline-size: var(--contact-mark-inline);
+  block-size: auto;
+  pointer-events: none;
+
+  /*
+   * Cropped on both axes: 70% visible from the END edge (so the leading 30% of
+   * the mark sits outside the section) and 70% visible from the top.
+   *
+   * The horizontal offset is a LOGICAL inset rather than a `translateX`, so it
+   * flips with the writing direction the way the rest of this rule does — the
+   * mark is cut on its leading edge either way. `calc()` keeps it tied to the
+   * width above: change the width and the crop stays 30%, which a hardcoded
+   * `-12%` would not.
+   */
+  inset-inline-start: calc(var(--contact-mark-inline) * -0.3);
+  /* Vertical has no direction to respect, so a transform is fine here. */
+  transform: translateY(30%);
+}
+
+@utility page-measure {
+  width: 80%;
+  max-width: var(--container-portal);
+  margin-inline: auto;
+}
+
+/* The two decorative radial washes, on childless absolutely-positioned layers. */
+@utility hero-glow {
+  background-image: radial-gradient(
+    80% 62% at 50% -12%,
+    var(--surface-tint),
+    transparent 62%
+  );
+}
+@utility slab-glow {
+  background-image: radial-gradient(
+    80% 60% at 12% 0%,
+    color-mix(in oklab, var(--color-accent-400) 12%, transparent),
+    transparent 56%
+  );
+}
+
+/*
+ * The contact band's ground. Fixed in BOTH themes, like the footer — it carries
+ * `data-surface="inverse"`, so its ink, link and accent roles are already
+ * theme-independent and there is nothing for a dark variant to flip it to.
+ *
+ * It runs BRIGHT at the top-left to DARK at the bottom-right, which is the
+ * opposite of the reference portal's gradient and is deliberate: the section
+ * directly above it is the emergency slab, a flat deep navy. The band's own
+ * `mt-16` already puts a strip of page ground between the two, so they never
+ * literally touch — but two dark slabs a few pixels apart still read as one
+ * interrupted thing unless they are visibly different, and starting this one at
+ * `primary-700` is what makes them different. Ending at `primary-950` then
+ * gives the light Contribute panel below a clean edge to sit against.
+ *
+ * The lightest stop is the one that has to hold contrast, and it does: white is
+ * 10.6:1 on `primary-700`, `--ink-inverse-muted` 6.4:1, `accent-400` 6.6:1.
+ */
+@utility contact-slab {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary-700) 0%,
+    var(--color-primary-900) 52%,
+    var(--color-primary-950) 100%
+  );
+}
+
+/* Staggered hero entrance. Always used behind `motion-safe:` — the `from`
+   state lives only in the keyframes, so no animation leaves the element in its
+   correct final position with no counter-rule needed. */
+@utility rise {
+  animation: rise 1s ease both;
+}
+@utility rise-1 {
+  animation: rise 0.9s ease 0.1s both;
+}
+@utility rise-2 {
+  animation: rise 1s ease 0.2s both;
+}
+@utility rise-3 {
+  animation: rise 1s ease 0.3s both;
+}
+@utility rise-4 {
+  animation: rise 1s ease 0.34s both;
+}
+@utility rise-5 {
+  animation: rise 1s ease 0.46s both;
+}
+
+/*
+ * Section reveal, inverted from the design: content is VISIBLE by default and
+ * the animation is added only where it is supported and wanted. In the design
+ * this ran the other way — opacity:0 with JS revealing — which meant a blocked
+ * or slow script left everything below the stat band invisible.
+ *
+ * Scroll-driven CSS, so there is no observer, no JS, and nothing to gate.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal-on-scroll {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+/* ==========================================================================
+   Emergency hotline ticker
+
+   All of the ticker's geometry and motion lives here so the component carries
+   named classes only — no `min-[1120px]:`, no `[animation-play-state:paused]`,
+   no arbitrary values in the markup.
+
+   The DEFAULT state is the accessible one: a static, horizontally scrollable
+   row with no animation and no duplicated copy. The marquee is added back by a
+   single media query, and that query carries BOTH conditions — under 1120px
+   AND motion allowed — so `prefers-reduced-motion: reduce` and a wide viewport
+   land on exactly the same static row with no second rule to keep in step.
+   ========================================================================== */
+
+@keyframes hotline-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Exactly one run. The track holds two, so this is a seamless loop. */
+    transform: translateX(-50%);
+  }
+}
+
+.hotline-viewport {
+  /*
+   * `auto`, not `hidden`, in the resting state — this is what the reader gets
+   * at >=1120px and under reduced motion, and a row they cannot scroll is a
+   * row with numbers they cannot reach.
+   *
+   * The scrollbar itself is suppressed: a classic Windows scrollbar is 15px in
+   * a 28px bar, which leaves 13px for 11px type. The row stays reachable by
+   * wheel, swipe and Tab (focus scrolls its own container into view), and the
+   * same numbers sit in #emergency at full size. Restore the scrollbar by
+   * dropping `scrollbar-width` if the bar is ever given more height.
+   */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hotline-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.hotline-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  /*
+   * Load-bearing. The viewport is a flex container, and a flex item defaults to
+   * `flex-shrink: 1` — so without this the track is SHRUNK to the viewport
+   * width instead of overflowing it, and the static row at >=1120px has
+   * nothing left to scroll. `max-content` sets the width; this is what lets it
+   * keep it.
+   */
+  flex-shrink: 0;
+}
+
+/*
+ * One run of the list. `flex: 1 0 auto` + `space-around` is what makes the
+ * marquee correct when the content is SHORTER than the bar as well as longer.
+ *
+ * `min-width: 200%` below resolves against the viewport, which has a definite
+ * width, so there is no cycle with the track's `max-content`. The track ends up
+ * at max(content, 2 x viewport); the two runs split it evenly because they
+ * grow, so `translateX(-50%)` always steps exactly one run whichever term won.
+ * With a short list `space-around` spreads the entries across the bar instead
+ * of leaving a gap trailing the second copy — the failure the reference has.
+ */
+.hotline-run {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  /*
+   * `center`, not `space-around`. The bar is one sentence now — organisations
+   * joined by `·`, an organisation's own numbers joined by `|` — and
+   * `space-around` would pull those separators away from the terms they bind,
+   * so `0907 299 3793 | 0956 739 5623` would read as two unrelated numbers.
+   * Centring keeps the line intact and is what centres the static row at
+   * >=1120px, where the content is narrower than the bar.
+   */
+  justify-content: center;
+  gap: --spacing(2);
+  /*
+   * The seam. Sits INSIDE the run, so it is counted in the run's width and the
+   * `-50%` step stays exactly one run — a `gap` on the track would space the
+   * two copies apart and put the loop's gap straight back. It gives the wrap
+   * ("… 911" → "⚠ Emergency hotlines:") the same rhythm as the separators
+   * inside the line.
+   */
+  padding-inline-end: --spacing(2);
+  white-space: nowrap;
+}
+
+/*
+ * The mobile nav dropdown. Anchored under the sticky header, so it gets the
+ * viewport minus the header's height — `100dvh` rather than `100vh` because a
+ * mobile browser's retracting URL bar is exactly the case this has to survive.
+ * It scrolls itself; unlike the modal it replaced, it does NOT lock the body.
+ */
+@utility mobile-nav-panel {
+  max-height: calc(100dvh - --spacing(16));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* The visual echo is for the running marquee and nothing else. */
+.hotline-echo {
+  display: none;
+}
+
+/*
+ * The marquee. Gated on `[data-marquee]`, which TickerViewport sets when one
+ * run is genuinely wider than the bar — not on a breakpoint, which is only a
+ * guess at the content's width and was wrong for both locales.
+ *
+ * With no JS there is no attribute and therefore no animation: the row stays a
+ * static, scrollable, fully readable line. That is the right way round for a
+ * progressive enhancement whose whole job is to move.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /*
+   * Hidden only while the marquee is actually running. Paused — by hover,
+   * focus, touch or a scroll gesture — it becomes a real scroller so the row
+   * can be dragged or swiped through by hand. `[data-paused]` is set by
+   * TickerViewport; the `:hover`/`:focus-within` selectors below do the same
+   * job with no JS at all, so the keyboard and mouse cases never depend on
+   * hydration.
+   */
+  .hotline-viewport[data-marquee='true']:not([data-paused='true']) {
+    overflow-x: hidden;
+  }
+  .hotline-viewport[data-marquee='true'] .hotline-echo {
+    display: flex;
+  }
+  /*
+   * 🔴 The marquee must start at the LEADING EDGE, not centred.
+   *
+   * This is the whole of the "gap in the loop" bug. The viewport is a centring
+   * flex container (it has to be — that is what centres the static row when the
+   * list is narrower than the bar). Centring a track that is TWICE the viewport
+   * puts its left edge at a negative offset: at 1200px the 2554px track began
+   * at x=-677. The animation then runs 0 → -50%, so by the end of the cycle the
+   * second run's right edge had reached x=605 and the remaining 595px of the
+   * bar was empty maroon — the reported gap, once per cycle, at every width.
+   *
+   * Start-aligned, the track spans [0, 2554] and ends at [-1277, 1277]: the
+   * viewport is covered at every frame, and the wrap is seamless because
+   * -50% of a two-run track is exactly one run.
+   */
+  .hotline-viewport[data-marquee='true'] {
+    justify-content: flex-start;
+  }
+  .hotline-viewport[data-marquee='true'] .hotline-track {
+    /*
+     * No `min-width: 200%` here any more. It existed to spread a SHORT list
+     * across the bar, but the marquee is now gated on measured overflow, so a
+     * short list never animates in the first place — and when the viewport is
+     * wider than one run, 200% exceeds the two-run content width and the runs
+     * grow, re-introducing exactly the slack this rule is meant to prevent.
+     * `max-content` alone is always exactly two runs.
+     */
+    animation: hotline-scroll 28s linear infinite;
+  }
+  /*
+   * WCAG 2.2.2 (Pause, Stop, Hide). The reference runs this forever with no
+   * way to stop it, which is a straight failure for motion lasting over five
+   * seconds. `:focus-within` is the half that matters for a keyboard reader —
+   * without it, tabbing onto a hotline lands focus on a moving target.
+   * `[data-paused]` adds the two CSS cannot express: touch, and dragging.
+   */
+  .hotline-viewport:hover .hotline-track,
+  .hotline-viewport:focus-within .hotline-track,
+  .hotline-viewport[data-paused='true'] .hotline-track {
+    animation-play-state: paused;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Kapwa's own base layer sets body colours from its tokens; ours is imported
+     after, so this wins. */
+  body {
+    background-color: var(--surface-page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * One visible focus ring, everywhere, on every surface. The design declared
+   * `outline: 0` on the search input with no replacement and no :focus-visible
+   * rule anywhere — a direct 2.4.7 failure.
+   */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 0.125rem;
+  }
+
+  /* Anchor targets must clear the sticky header. Every in-page link on this
+     page (#services, #history, #emergency, #getting-here, #contact) otherwise
+     lands with its heading tucked underneath. */
+  [id] {
+    scroll-margin-top: --spacing(20);
+  }
+}

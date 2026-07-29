@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Favicon, dark-UI variant. Notes inside; see icon-light.svg for why. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 44 134 142.35" width="134" height="142.35">
+  <!--
+    Same geometry and same edge-to-edge crop as icon-light.svg; only the land
+    changes.
+
+    #0032A0 (color-primary-700) is the brand navy and is 1.8:1 on a dark tab
+    strip — it disappears. #8CB4FF is color-primary-300, the ramp step both the
+    dark theme and the mark-land role already use for exactly this reason, and
+    it holds the brand's hue while staying legible. The sun keeps #FCD116, the
+    Philippine flag yellow: it reads on either ground, and at 16px it is the
+    half of the mark that carries the identity.
+
+    Not the all-white reversed variant, deliberately. A tab strip is "dark UI",
+    not one of the site's inverse SURFACES, and flattening the two shapes into
+    one colour throws away the only thing distinguishing them at favicon size.
+  -->
+  <defs>
+    <path id="bt-icon-dark-land" d="M150.9,55.0L150.1,54.6L64.1,50.0L58.3,58.7L56.9,59.6L56.7,61.9L57.8,63.7L57.1,64.9L57.2,67.7L60.4,73.1L58.2,76.6L60.6,80.0L61.8,86.0L60.6,87.9L61.1,90.5L61.1,93.6L62.1,93.9L62.2,96.4L64.2,98.8L64.4,101.1L48.0,104.4L96.2,184.5L100.6,180.4L103.0,183.2L106.1,181.8L112.9,187.9L114.7,189.8L122.3,183.8L135.6,170.4L146.1,157.7L161.6,151.5L163.8,155.1L165.9,156.4L169.2,154.0L178.9,151.2L181.2,151.6L194.0,145.7L191.8,143.3L188.5,138.8L185.7,134.2L183.8,129.7L183.2,127.2L182.1,125.2L182.0,123.2L183.3,120.2L185.0,118.1L182.3,116.9L178.1,116.3L177.5,114.3L177.8,109.3L177.0,108.0L171.8,106.2L171.8,104.6L173.8,103.3L173.2,101.6L170.1,104.3L169.7,106.6L172.7,108.1L172.2,110.8L170.3,111.9L168.9,110.1L166.7,110.1L162.0,111.1L159.2,110.1L155.0,107.7L152.7,105.7L149.4,103.6L143.3,96.7L142.0,91.4L139.5,87.1L139.1,84.1L139.9,81.5L144.1,78.2L144.9,74.2L143.7,73.8L143.7,72.0L144.7,69.5L147.2,65.4L146.7,64.2L147.4,60.4L149.9,57.6L150.9,55.0Z"/>
+    <mask id="bt-icon-dark-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+      <rect width="200" height="200" fill="#fff"/>
+      <use href="#bt-icon-dark-land" transform="translate(-14 44) scale(0.75)" fill="#000" stroke="#000" stroke-width="11" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <g mask="url(#bt-icon-dark-gap)" fill="#FCD116">
+    <g transform="translate(104 96) scale(2.7368)">
+      <circle r="9"/>
+      <g id="bt-icon-dark-half">
+        <g id="bt-icon-dark-quad">
+          <g id="bt-icon-dark-point">
+            <path d="M-1 0l.062.062L0 0l-.938-.062z" transform="scale(19)"/>
+            <path id="bt-icon-dark-ray" d="M-.884.116l.05.05L0 0z" transform="scale(19.2381)"/>
+            <use href="#bt-icon-dark-ray" transform="scale(1 -1)"/>
+          </g>
+          <use href="#bt-icon-dark-point" transform="rotate(45)"/>
+        </g>
+        <use href="#bt-icon-dark-quad" transform="rotate(90)"/>
+      </g>
+      <use href="#bt-icon-dark-half" transform="rotate(180)"/>
+    </g>
+  </g>
+  <use href="#bt-icon-dark-land" transform="translate(-14 44) scale(0.75)" fill="#8CB4FF"/>
+</svg>

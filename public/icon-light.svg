@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Favicon, light-UI variant. Notes inside the element, deliberately. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 44 134 142.35" width="134" height="142.35">
+  <!--
+    ## Why the prose is in here and not above the tag
+
+    Format sniffers (libvips, which the icon build runs through) scan only the
+    first ~1KB for a recognised opening token. A long leading comment pushes the
+    real tag past that window and the file is rejected as "unsupported image
+    format" — which is exactly what happened to this pair. Keeping the notes
+    INSIDE the element means the tag is always within the first ~150 bytes, no
+    matter how much documentation accumulates here. The XML declaration is a
+    second belt on the same braces.
+
+    ## The mark
+
+    Cut from brand/logo/better-tandag-color.svg — the sun and land mark.
+
+    The viewBox is the measured ink box, EDGE TO EDGE: x 22-156, y 44-186.35.
+    The delivered file frames that in a 154 square from (12, 40), which leaves
+    10 units of air on each side — at 16px every pixel of the box counts. Same
+    crop as Logo.tsx, and deliberately NOT square (134 x 142.35, aspect 0.94):
+    a square would letterbox the mark back off two of its edges.
+
+    ## The colours
+
+    Literals, because an SVG asset is not a component: the browser fetches it as
+    a standalone document, it never sees globals.css, and there is no @theme
+    token to reach for. They are the ramp anchors all the same — #0032A0 is
+    color-primary-700 / portal.brandColor, and #FCD116 is color-mark-sun-flag,
+    the PHILIPPINE FLAG yellow rather than the portal's color-accent-400
+    (#F2C81D). If the ramp moves, these move with it.
+
+    Token names appear without their leading double dash on purpose: an XML
+    comment may not contain a double hyphen, and the icon build parses this as
+    strict XML. The outgoing version of this file had that bug latent — browsers
+    forgive it, the rasteriser does not.
+
+    This is the variant for a LIGHT browser chrome: the brand navy holds on the
+    tab's own pale ground. See icon-dark.svg for the other half.
+  -->
+  <defs>
+    <path id="bt-icon-light-land" d="M150.9,55.0L150.1,54.6L64.1,50.0L58.3,58.7L56.9,59.6L56.7,61.9L57.8,63.7L57.1,64.9L57.2,67.7L60.4,73.1L58.2,76.6L60.6,80.0L61.8,86.0L60.6,87.9L61.1,90.5L61.1,93.6L62.1,93.9L62.2,96.4L64.2,98.8L64.4,101.1L48.0,104.4L96.2,184.5L100.6,180.4L103.0,183.2L106.1,181.8L112.9,187.9L114.7,189.8L122.3,183.8L135.6,170.4L146.1,157.7L161.6,151.5L163.8,155.1L165.9,156.4L169.2,154.0L178.9,151.2L181.2,151.6L194.0,145.7L191.8,143.3L188.5,138.8L185.7,134.2L183.8,129.7L183.2,127.2L182.1,125.2L182.0,123.2L183.3,120.2L185.0,118.1L182.3,116.9L178.1,116.3L177.5,114.3L177.8,109.3L177.0,108.0L171.8,106.2L171.8,104.6L173.8,103.3L173.2,101.6L170.1,104.3L169.7,106.6L172.7,108.1L172.2,110.8L170.3,111.9L168.9,110.1L166.7,110.1L162.0,111.1L159.2,110.1L155.0,107.7L152.7,105.7L149.4,103.6L143.3,96.7L142.0,91.4L139.5,87.1L139.1,84.1L139.9,81.5L144.1,78.2L144.9,74.2L143.7,73.8L143.7,72.0L144.7,69.5L147.2,65.4L146.7,64.2L147.4,60.4L149.9,57.6L150.9,55.0Z"/>
+    <mask id="bt-icon-light-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+      <rect width="200" height="200" fill="#fff"/>
+      <use href="#bt-icon-light-land" transform="translate(-14 44) scale(0.75)" fill="#000" stroke="#000" stroke-width="11" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <g mask="url(#bt-icon-light-gap)" fill="#FCD116">
+    <g transform="translate(104 96) scale(2.7368)">
+      <circle r="9"/>
+      <g id="bt-icon-light-half">
+        <g id="bt-icon-light-quad">
+          <g id="bt-icon-light-point">
+            <path d="M-1 0l.062.062L0 0l-.938-.062z" transform="scale(19)"/>
+            <path id="bt-icon-light-ray" d="M-.884.116l.05.05L0 0z" transform="scale(19.2381)"/>
+            <use href="#bt-icon-light-ray" transform="scale(1 -1)"/>
+          </g>
+          <use href="#bt-icon-light-point" transform="rotate(45)"/>
+        </g>
+        <use href="#bt-icon-light-quad" transform="rotate(90)"/>
+      </g>
+      <use href="#bt-icon-light-half" transform="rotate(180)"/>
+    </g>
+  </g>
+  <use href="#bt-icon-light-land" transform="translate(-14 44) scale(0.75)" fill="#0032A0"/>
+</svg>

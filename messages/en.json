@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "homeTitle": "BetterTandag | Tandag City Services, Government Info & Public Data",
+    "homeDescription": "An independent, resident-built portal for {city}, {province}. Services, city figures, history and emergency numbers — sourced, dated, and free to reuse.",
+    "searchTitle": "Search",
+    "notFoundTitle": "Page not found",
+    "sourcesTitle": "Sources",
+    "sourcesDescription": "Every figure published on {city}'s portal, and the record it came from."
+  },
+  "sources": {
+    "heading": "Where these figures come from",
+    "lastReviewed": "Last reviewed {date}",
+    "citationsHeading": "Sources",
+    "backs": "Backs",
+    "via": "reached through {source}",
+    "noLink": "No public link",
+    "caveatsHeading": "What to know about this list",
+    "hotlineUsage": "{organisation} hotline",
+    "backHome": "Back to the home page"
+  },
+  "common": {
+    "skipToContent": "Skip to main content",
+    "comingSoon": "Soon",
+    "backToTop": "Back to top",
+    "lastChecked": "Last checked",
+    "via": "via {source}",
+    "opensExternalSite": "opens an external site",
+    "sources": "Sources",
+    "contribute": "Contribute",
+    "home": "Home"
+  },
+  "fallback": {
+    "notice": "Some of this page has no Filipino translation yet, so it is shown in English.",
+    "help": "Can you help translate it? Write to {email}."
+  },
+  "nav": {
+    "label": "Main",
+    "mobileLabel": "Mobile",
+    "services": "Services",
+    "allServices": "All services",
+    "business": "Business & permits",
+    "socialWelfare": "Social welfare",
+    "health": "Health",
+    "government": "Government",
+    "officials": "Officials",
+    "transparency": "Transparency",
+    "departments": "Departments",
+    "cityProfile": "City profile",
+    "cityAtAGlance": "The city at a glance",
+    "tourism": "Tourism",
+    "history": "History",
+    "news": "News",
+    "emergency": "Emergency",
+    "contact": "Contact",
+    "sources": "Sources"
+  },
+  "ticker": {
+    "regionLabel": "Emergency hotlines",
+    "label": "Emergency Hotlines:"
+  },
+  "header": {
+    "homeLink": "{portal} — home",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme",
+    "themeIsDark": "Dark theme on",
+    "themeIsLight": "Light theme on",
+    "languageLabel": "Language",
+    "english": "EN",
+    "filipino": "FIL",
+    "englishFull": "English",
+    "filipinoFull": "Filipino"
+  },
+  "advisory": {
+    "label": "Advisory",
+    "regionLabel": "Advisory",
+    "dismiss": "Dismiss advisory"
+  },
+  "hero": {
+    "eyebrow": "{city} · {province}",
+    "titleWelcome": "Dayon.",
+    "titleCarryOn": "Padayon.",
+    "titleCity": "Tandag.",
+    "lede": "Access government services, information, and resources for the people of the {city}, {province}.",
+    "browseServices": "Browse Services",
+    "contactUs": "Contact Us",
+    "findService": "Find a Service",
+    "findServiceHelp": "Search for government services and information",
+    "searchLabel": "Search services",
+    "searchPlaceholder": "e.g. birth certificate, business permit",
+    "searchSubmit": "Search",
+    "popular": "Popular:"
+  },
+  "stats": {
+    "regionLabel": "The city at a glance",
+    "residents": "Residents",
+    "households": "Households",
+    "barangays": "Barangays",
+    "landArea": "Land area",
+    "squareKilometres": "km²"
+  },
+  "services": {
+    "eyebrow": "01 · Services",
+    "heading": "I want to…",
+    "note": "Steps and fees below name the office to visit. Requirements themselves are pending verification against a published citizen's charter.",
+    "mostAsked": "Most asked",
+    "openChecklist": "Open the checklist",
+    "viewAll": "View all services",
+    "viewAllMeta": "Every service guide on the portal, in one place"
+  },
+  "history": {
+    "eyebrow": "02 · History",
+    "heading": "How Tandag got here",
+    "intro": "Every entry below is tied to the Wikipedia article on Tandag and the works it cites.",
+    "nameOrigin": "Where the name came from",
+    "nameOriginIntro": "Three stories survive. None of them is settled — and all three are about not understanding each other.",
+    "timelineLabel": "City history, in order",
+    "milestone": "Milestone"
+  },
+  "gettingHere": {
+    "eyebrow": "04 · Getting here",
+    "heading": "Getting to Tandag",
+    "summary": "448 nautical miles from Manila, 150 from Cebu, 331 km up the road from Davao."
+  },
+  "emergency": {
+    "eyebrow": "03 · Emergency",
+    "heading": "When the river rises",
+    "intro": "Tandag takes weather directly off the Pacific — about {rainfall} mm of rain a year, most of it between November and February, with no real dry season to plan around.",
+    "hotlines": "Hotlines",
+    "callAria": "Call {organisation} on {number}",
+    "beforeSeason": "Before the season",
+    "pendingTitle": "Local hotline numbers",
+    "pendingBody": "We are still sourcing verified numbers for {offices}. Publishing a number we cannot check is how someone ends up calling a dead line in a storm. The city's disaster office posts current numbers on its page.",
+    "pendingCta": "City DRRM office page"
+  },
+  "contact": {
+    "eyebrow": "05 · Get in touch",
+    "heading": "How to reach City Hall",
+    "viewHotlines": "Emergency hotlines",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "addressLabel": "Address",
+    "phoneHours": "Office hours, Monday to Friday",
+    "emailResponse": "Replies are not guaranteed",
+    "addressNote": "opens in Google Maps",
+    "placeholderTag": "placeholder",
+    "placeholderNote": "Placeholder — not a working contact. Do not use it.",
+    "placeholderNotice": "We have no verified phone number or email address for {office} yet, so the two below are placeholders — they are not real and will not reach anyone. If you have the published ones, send them to {email} and we will replace these the same day."
+  },
+  "footer": {
+    "about": "Built by Tandaganons for Tandag. Empowering the people of Tandag with transparent access to government services, programs, and public funds.",
+    "pages": "Pages",
+    "resources": "Resources",
+    "costLine": "Cost to the People of {city} = ₱0",
+    "volunteer": "Volunteer with us",
+    "contributeCode": "Contribute code with us",
+    "network": "Part of the {network} network",
+    "copyright": "© 2026 {host}. All rights reserved.",
+    "sourceCode": "Source Code",
+    "version": "Portal version"
+  },
+  "resources": {
+    "openData": "Open Data Philippines",
+    "foi": "Freedom of Information",
+    "sangguniangPanlungsod": "Sangguniang Panlungsod",
+    "lguFacebook": "LGU Tandag Facebook",
+    "blgf": "BLGF Portal",
+    "cmci": "CMCI DTI Portal",
+    "philgeps": "PhilGEPS",
+    "govph": "Official Gov.PH"
+  },
+  "search": {
+    "heading": "Search",
+    "resultsFor": "Results for “{query}”",
+    "resultCount": "{count, plural, =0 {No results} one {1 result} other {# results}}",
+    "empty": "Type something to search the portal.",
+    "noResults": "Nothing matched “{query}” — try “permit”, “tax” or “flood”.",
+    "backHome": "Back to the home page"
+  },
+  "notFound": {
+    "heading": "Page not found",
+    "body": "That page does not exist on this portal. It may have moved, or it may not be built yet.",
+    "backHome": "Back to the home page"
+  },
+  "error": {
+    "heading": "Something went wrong",
+    "body": "This page failed to load. The rest of the portal is unaffected.",
+    "retry": "Try again"
+  }
+}

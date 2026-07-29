@@ -1,0 +1,54 @@
+# The four figures in the stat band.
+#
+# The NUMBERS live in config/lgu.config.json — this file carries only the
+# caption and the citation for each. Every figure on this page names the year it
+# belongs to and the record it comes from.
+
+stats:
+  - key: population
+    caption:
+      en: '2024 census · PSA'
+      fil: '2024 senso · PSA'
+    source:
+      label:
+        en: 'Philippine Statistics Authority, 2024 census'
+        fil: 'Philippine Statistics Authority, senso ng 2024'
+      url: 'https://psa.gov.ph'
+      # Capitalised because it is rendered — "reached through Wikipedia" on
+      # /sources. It was lowercase while nothing displayed it.
+      via: Wikipedia
+
+  - key: households
+    caption:
+      en: '2024 census · about 4.2 people each'
+      fil: '2024 senso · mga 4.2 katao bawat isa'
+    source:
+      label:
+        en: 'Philippine Statistics Authority, 2024 census'
+        fil: 'Philippine Statistics Authority, senso ng 2024'
+      url: 'https://psa.gov.ph'
+      # Capitalised because it is rendered — "reached through Wikipedia" on
+      # /sources. It was lowercase while nothing displayed it.
+      via: Wikipedia
+
+  - key: barangays
+    # The approved design read "5 poblacion · 16 others". No source states that
+    # split; the article gives the classification below, so that is what ships.
+    caption:
+      en: '6 urban · 5 coastal · 4 built-up · 6 hinterland'
+      fil: '6 urban · 5 baybayin · 4 built-up · 6 bulubundukin'
+    source:
+      label:
+        en: 'Wikipedia — Tandag, barangay classification'
+        fil: 'Wikipedia — Tandag, uri ng mga barangay'
+      url: 'https://en.wikipedia.org/wiki/Tandag'
+
+  - key: landArea
+    caption:
+      en: '5.91% of the province'
+      fil: '5.91% ng lalawigan'
+    source:
+      label:
+        en: 'Wikipedia — Tandag, land area'
+        fil: 'Wikipedia — Tandag, lawak ng lupa'
+      url: 'https://en.wikipedia.org/wiki/Tandag'

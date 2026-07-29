@@ -1,0 +1,67 @@
+# The /sources page.
+#
+# ONLY the editorial parts live here — the intro, the review date, and the
+# standing caveats. The citation LIST is not in this file and must never be
+# copied into it: it is derived from the same `source` blocks the page already
+# renders (content/home/stats.yaml, content/home/emergency.yaml), so a figure
+# and its entry on the sources page cannot drift apart.
+#
+# Add a source by citing it on the figure it backs. It appears here by itself.
+
+lastReviewedAt: '2026-07-29'
+
+intro:
+  en: >-
+    Every figure published on this site names where it came from. This page
+    collects those citations in one place, so you can check the portal without
+    reading it — which is the only way a transparency site is worth anything.
+  fil: >-
+    Bawat datos na inilathala sa site na ito ay may pinagmulan. Tinitipon ng
+    pahinang ito ang lahat ng sanggunian sa isang lugar, para masuri ninyo ang
+    portal nang hindi ito binabasa nang buo — iyon lang ang paraan para
+    magkahalaga ang isang site ng transparensya.
+
+# Stated plainly, because a citation list that hides its own weaknesses is
+# worse than no list. Each of these is a known gap, not a disclaimer.
+caveats:
+  - en: >-
+      Wikipedia is a tertiary source. Where a figure reaches us through it, the
+      entry says so — cite the primary record (the PSA, the Republic Act texts,
+      the Supreme Court decisions, Climate-Data.org) rather than the article.
+    fil: >-
+      Ang Wikipedia ay tertiary na sanggunian. Kung ang isang datos ay dumaan
+      dito, nakasaad iyon sa listahan — ang dapat banggitin ay ang orihinal na
+      talaan (PSA, mga teksto ng Republic Act, mga desisyon ng Korte Suprema,
+      Climate-Data.org), hindi ang artikulo.
+  - en: >-
+      Two figures still cite Wikipedia directly — the barangay classification
+      and the land area — and neither carries a date. Replacing them with the
+      primary record is an open task, not an oversight.
+    fil: >-
+      May dalawang datos na direktang bumabanggit pa rin sa Wikipedia — ang uri
+      ng mga barangay at ang lawak ng lupa — at wala pa itong petsa. Ang
+      pagpapalit nito ng orihinal na talaan ay bukas na gawain, hindi kaligtaan.
+  - en: >-
+      The official city portal did not resolve when last checked, so it cannot
+      be used as a live source yet.
+    fil: >-
+      Hindi gumagana ang opisyal na portal ng lungsod nang huling tiningnan,
+      kaya hindi pa ito magagamit bilang buhay na sanggunian.
+  - en: >-
+      The local emergency numbers were supplied by a resident contributor and
+      are not confirmed against any public posting. They ship with that stated
+      on the page and a date beside it. If you can point us at an official
+      posting, that is the single most useful correction you can send.
+    fil: >-
+      Ang mga lokal na numero sa emerhensiya ay galing sa isang residenteng
+      nag-ambag at hindi pa nakumpirma sa anumang opisyal na post. Nakasaad iyon
+      sa pahina, may petsa. Kung may maituturo kayong opisyal na post, iyon ang
+      pinakamahalagang pagwawasto na maipapadala ninyo.
+  - en: >-
+      City Hall's street address and map link were supplied directly by the
+      project and carry no public citation. The phone number and email address
+      shown beside them are placeholders and are marked as such.
+    fil: >-
+      Ang address at link sa mapa ng City Hall ay direktang ibinigay ng proyekto
+      at walang pampublikong sanggunian. Ang numero ng telepono at email na
+      katabi nito ay pansamantala lamang at may markang ganoon.

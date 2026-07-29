@@ -1,0 +1,59 @@
+# The "I want to…" grid — the "Most asked" group on the landing page.
+#
+# Every destination is `coming-soon` until its route is built — a link that 404s
+# from our own navigation reads as a broken site. Flip `status` to `live` in the
+# same commit that ships the route. No code change is needed either way.
+#
+# The section renders the featured card plus these three, and then ONE more card
+# the component owns: "View all services", pointing at /services. That card is a
+# navigation affordance rather than a service, so it deliberately has no entry
+# here — adding it would put it in the search index as a service and would make
+# "how many services are on the landing page" mean two different things.
+#
+# Barangay clearance, scholarships and health centres were cut from this list to
+# hold the group at five cards. Nothing about them was wrong; they belong on the
+# services index when it ships.
+
+featured:
+  title:
+    en: 'Apply for a business permit'
+    fil: 'Mag-apply ng business permit'
+  body:
+    en: >-
+      New or renewing. Start at the Business Permits and Licensing Office on the
+      ground floor of City Hall — bring barangay clearance, and expect the
+      fire-safety and sanitary sign-offs in the same trip.
+    fil: >-
+      Bago o nagre-renew. Magsimula sa Business Permits and Licensing Office sa
+      ground floor ng City Hall — magdala ng barangay clearance, at asahang
+      kasama sa parehong pagpunta ang fire-safety at sanitary na pirma.
+  href: /services/business/business-permit
+  status: coming-soon
+
+cards:
+  - title:
+      en: 'Pay real property tax'
+      fil: 'Magbayad ng real property tax'
+    meta:
+      en: "City Treasurer's Office · discount window early in the year"
+      fil: 'Tanggapan ng City Treasurer · may diskuwento sa simula ng taon'
+    href: /services/business/real-property-tax
+    status: coming-soon
+
+  - title:
+      en: 'Request a birth or marriage certificate'
+      fil: 'Humingi ng birth o marriage certificate'
+    meta:
+      en: 'City Civil Registrar · PSA copies take longer'
+      fil: 'City Civil Registrar · mas matagal ang kopya mula PSA'
+    href: /services/social-welfare/civil-registry
+    status: coming-soon
+
+  - title:
+      en: 'See job openings at City Hall'
+      fil: 'Tingnan ang mga bakanteng trabaho sa City Hall'
+    meta:
+      en: 'HRMO postings · plus CSC eligibility notes'
+      fil: 'Mga anunsyo ng HRMO · pati paalala sa CSC eligibility'
+    href: /government/departments/hrmo
+    status: coming-soon

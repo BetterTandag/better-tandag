@@ -1,0 +1,61 @@
+{
+  "portal": {
+    "name": "BetterTandag",
+    "shortName": "BetterTandag",
+    "wordmark": { "lead": "Better", "main": "Tandag" },
+    "domain": "https://bettertandag.org",
+    "brandColor": "#0032A0",
+    "accentColor": "#F2C81D",
+    "tagline": "Dayon. Padayon. Tandag.",
+    "independent": true,
+    "repository": "https://github.com/BetterTandag/better-tandag",
+    "network": { "name": "BetterGov.ph", "url": "https://bettergov.ph/" }
+  },
+  "lgu": {
+    "officialName": "City of Tandag",
+    "shortName": "Tandag",
+    "province": "Surigao del Sur",
+    "region": "Caraga",
+    "district": "1st district",
+    "psgc": "166819000",
+    "postalCode": "8300",
+    "incomeClass": "3rd city income class",
+    "cityhoodDate": "2007-06-25",
+    "charterDay": "06-23",
+    "coordinates": { "latitude": 9.0789, "longitude": 126.1986 },
+    "landAreaKm2": 291.73,
+    "provinceAreaSharePercent": 5.91,
+    "barangayCount": 21,
+    "population": 63098,
+    "households": 14931,
+    "censusYear": 2024,
+    "annualRainfallMm": 4490
+  },
+  "contact": {
+    "email": "hello@bettertandag.org",
+    "cityHall": {
+      "name": "Tandag City Hall",
+      "locality": "Tandag City, Surigao del Sur",
+      "address": "Airport Road, Awasian, Tandag City",
+      "mapUrl": "https://maps.app.goo.gl/KuFQQVpxbytoUXxy9",
+      "status": "placeholder",
+      "note": "`status` governs the PHONE and EMAIL ONLY. Both are INVENTED and deliberately unusable — 000-0000 is not a dialable subscriber number and .invalid is a reserved TLD that can never resolve — because tandag.gov.ph does not resolve and no citizen's charter has been obtained. The contact section renders them as non-links with a visible notice while status is 'placeholder'. Flip to 'verified' in the same commit that replaces both values with sourced ones; the UI turns them into tel:/mailto: links with no code change. `address` and `mapUrl` are NOT placeholders: both were supplied directly by the project owner and render as a real link regardless of this flag.",
+      "phone": "(086) 000-0000",
+      "email": "placeholder@example.invalid"
+    },
+    "nationalEmergencyLine": "911"
+  },
+  "socials": {
+    "cityGovernmentFacebook": "https://www.facebook.com/CityGovernmentofTandag",
+    "cdrrmoFacebook": "https://www.facebook.com/CDRRMOtandag"
+  },
+  "sources": {
+    "officialPortal": {
+      "url": "https://www.tandag.gov.ph",
+      "status": "unreachable",
+      "note": "Domain did not resolve when last checked. Do not cite as a live source until it does."
+    },
+    "psa": "https://psa.gov.ph",
+    "wikipedia": "https://en.wikipedia.org/wiki/Tandag"
+  }
+}

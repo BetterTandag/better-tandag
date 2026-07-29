@@ -1,0 +1,16 @@
+# The advisory bar.
+#
+# Ships EMPTY. The bar is where an active weather, brownout or service notice
+# would sit — it stays absent until a verified advisory is published, because a
+# permanent sample advisory teaches people to ignore the real one.
+#
+# To publish one, replace `null` with:
+#
+#   advisory:
+#     id: 'brownout-2026-08-04'     # dismissal is keyed to this — always change it
+#     updatedAt: '2026-08-04'
+#     body:
+#       en: 'Scheduled brownout in Poblacion, 8am–12nn Tuesday.'
+#       fil: 'Nakatakdang brownout sa Poblacion, 8am–12nn Martes.'
+
+advisory: null

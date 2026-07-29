@@ -45,8 +45,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# AI tooling — the rulebook for this repo lives in the workspace root
-# (../CLAUDE.md + ../context/), never in-tree. See workspace rule 3.
+# AI tooling — assistant scratch state, not project documentation. The rules
+# this repo is built to are checked in: docs/coding-standards.md, CONTRIBUTING.md
+# and CODE_OF_CONDUCT.md. Nothing in this repository depends on a file outside
+# it, so a clone of it on its own is complete.
 .claude/
 CLAUDE.md
 AGENTS.md

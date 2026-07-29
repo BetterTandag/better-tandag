@@ -1,0 +1,53 @@
+# Getting here — by air, by land, by sea, and what to know on arrival.
+# Carriers, terminals and the airport location are all named in the Wikipedia
+# article on Tandag.
+
+cards:
+  - kicker:
+      en: 'By air'
+      fil: 'Sa eroplano'
+    title:
+      en: 'Tandag Airport, and three alternatives'
+      fil: 'Tandag Airport, at tatlong alternatibo'
+    body:
+      en: >-
+        Tandag has a national secondary airport in Awasian, though the Cebu route
+        was terminated in September 2018. Most travellers fly into Davao, Butuan
+        or Surigao and continue overland.
+
+  - kicker:
+      en: 'By land'
+      fil: 'Sa lupa'
+    title:
+      en: 'Buses and vans, all day'
+      fil: 'Bus at van, buong araw'
+    body:
+      en: >-
+        Bachelor Express runs from Davao, Butuan, Surigao City and Bislig;
+        Philtranco and PP Bus Line come from Pasay and Cubao via Cantilan. The
+        white vans from Bancasi Airport are the fastest way in from Butuan.
+
+  - kicker:
+      en: 'By sea'
+      fil: 'Sa dagat'
+    title:
+      en: 'Cebu to Surigao, then overland'
+      fil: 'Cebu papuntang Surigao, saka sa lupa'
+    body:
+      en: >-
+        Cokaliong Shipping Lines sails Cebu–Surigao City on regular schedules;
+        multicabs and tricycles connect the wharf to the integrated terminal for
+        buses to Tandag.
+
+  - kicker:
+      en: "Once you're here"
+      fil: 'Pagdating mo rito'
+    title:
+      en: 'Two terminals worth knowing'
+      fil: 'Dalawang terminal na dapat mong alam'
+    surface: inverse
+    body:
+      en: >-
+        Buses, vans and jeepneys leave from Tandag City Overland Transport
+        Terminal in Balilahan. Jeepneys and tricycles to Cortes, Tago, San Miguel
+        and Cantilan wait at Moonglow Public Market.

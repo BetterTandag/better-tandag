@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "homeTitle": "{city} — mga serbisyo, numero at hotline",
+    "homeDescription": "Isang malayang portal na gawa ng mga residente para sa {city}, {province}. Mga serbisyo, numero ng lungsod, kasaysayan at hotline — may pinagmulan, may petsa, at malayang magamit.",
+    "searchTitle": "Maghanap",
+    "notFoundTitle": "Hindi mahanap ang pahina",
+    "sourcesTitle": "Mga sanggunian",
+    "sourcesDescription": "Bawat datos na inilathala sa portal ng {city}, at ang talaang pinagmulan nito."
+  },
+  "sources": {
+    "heading": "Saan nanggaling ang mga datos na ito",
+    "lastReviewed": "Huling sinuri {date}",
+    "citationsHeading": "Mga sanggunian",
+    "backs": "Pinagbabatayan ng",
+    "via": "dumaan sa {source}",
+    "noLink": "Walang pampublikong link",
+    "caveatsHeading": "Dapat malaman tungkol sa listahang ito",
+    "hotlineUsage": "Hotline ng {organisation}",
+    "backHome": "Bumalik sa pangunahing pahina"
+  },
+  "common": {
+    "skipToContent": "Dumiretso sa pangunahing nilalaman",
+    "comingSoon": "Malapit na",
+    "backToTop": "Bumalik sa itaas",
+    "lastChecked": "Huling tiningnan",
+    "via": "sa pamamagitan ng {source}",
+    "opensExternalSite": "magbubukas ng panlabas na website",
+    "sources": "Mga sanggunian",
+    "contribute": "Mag-ambag",
+    "home": "Pangunahing pahina"
+  },
+  "fallback": {
+    "notice": "May bahagi ng pahinang ito na wala pang salin sa Filipino, kaya nasa Ingles muna ito.",
+    "help": "Matutulungan mo ba kaming isalin? Sumulat sa {email}."
+  },
+  "nav": {
+    "label": "Pangunahin",
+    "mobileLabel": "Mobile",
+    "services": "Mga Serbisyo",
+    "allServices": "Lahat ng serbisyo",
+    "business": "Negosyo at permiso",
+    "socialWelfare": "Serbisyong panlipunan",
+    "health": "Kalusugan",
+    "government": "Pamahalaan",
+    "officials": "Mga Opisyal",
+    "transparency": "Transparensya",
+    "departments": "Mga Kagawaran",
+    "cityProfile": "Ang Lungsod",
+    "cityAtAGlance": "Ang lungsod sa isang sulyap",
+    "tourism": "Turismo",
+    "history": "Kasaysayan",
+    "news": "Balita",
+    "emergency": "Emerhensiya",
+    "contact": "Kontak",
+    "sources": "Mga sanggunian"
+  },
+  "ticker": {
+    "regionLabel": "Mga hotline sa emerhensiya",
+    "label": "Mga hotline sa emerhensiya:"
+  },
+  "header": {
+    "homeLink": "{portal} — pangunahing pahina",
+    "openMenu": "Buksan ang menu",
+    "closeMenu": "Isara ang menu",
+    "switchToDark": "Lumipat sa madilim na tema",
+    "switchToLight": "Lumipat sa maliwanag na tema",
+    "themeIsDark": "Nakabukas ang madilim na tema",
+    "themeIsLight": "Nakabukas ang maliwanag na tema",
+    "languageLabel": "Wika",
+    "english": "EN",
+    "filipino": "FIL",
+    "englishFull": "English",
+    "filipinoFull": "Filipino"
+  },
+  "advisory": {
+    "label": "Abiso",
+    "regionLabel": "Abiso",
+    "dismiss": "Isara ang abiso"
+  },
+  "hero": {
+    "eyebrow": "{city} · {province}",
+    "titleWelcome": "Dayon.",
+    "titleCarryOn": "Padayon.",
+    "titleCity": "Tandag.",
+    "lede": "Alamin ang mga serbisyo, impormasyon at tulong ng pamahalaan para sa mga taga-{city}, {province}.",
+    "browseServices": "Tingnan ang mga serbisyo",
+    "contactUs": "Makipag-ugnayan",
+    "findService": "Maghanap ng serbisyo",
+    "findServiceHelp": "Maghanap ng mga serbisyo at impormasyon ng pamahalaan",
+    "searchLabel": "Maghanap ng serbisyo",
+    "searchPlaceholder": "hal. birth certificate, business permit",
+    "searchSubmit": "Maghanap",
+    "popular": "Sikat:"
+  },
+  "stats": {
+    "regionLabel": "Ang lungsod sa isang sulyap",
+    "residents": "Mga residente",
+    "households": "Mga sambahayan",
+    "barangays": "Mga barangay",
+    "landArea": "Lawak ng lupa",
+    "squareKilometres": "km²"
+  },
+  "services": {
+    "eyebrow": "01 · Mga Serbisyo",
+    "heading": "Gusto kong…",
+    "note": "Ang mga hakbang at bayarin sa ibaba ay nagsasabi kung aling tanggapan ang pupuntahan. Ang mga kailangang dokumento mismo ay naghihintay pa ng pagpapatunay laban sa nailathalang citizen's charter.",
+    "mostAsked": "Pinakamadalas hanapin",
+    "openChecklist": "Buksan ang checklist",
+    "viewAll": "Tingnan lahat ng serbisyo",
+    "viewAllMeta": "Lahat ng gabay sa serbisyo sa portal, sa isang lugar"
+  },
+  "history": {
+    "eyebrow": "02 · Kasaysayan",
+    "heading": "Paano nakarating dito ang Tandag",
+    "intro": "Bawat nakasulat sa ibaba ay nakaugnay sa artikulo ng Wikipedia tungkol sa Tandag at sa mga akdang binanggit nito.",
+    "nameOrigin": "Saan nanggaling ang pangalan",
+    "nameOriginIntro": "Tatlong kuwento ang natira. Wala pa ring tiyak sa mga ito — at pare-pareho silang tungkol sa hindi pagkakaunawaan.",
+    "timelineLabel": "Kasaysayan ng lungsod, ayon sa pagkakasunod",
+    "milestone": "Mahalagang yugto"
+  },
+  "gettingHere": {
+    "eyebrow": "04 · Papunta rito",
+    "heading": "Papaano makarating sa Tandag",
+    "summary": "448 nautical miles mula Maynila, 150 mula Cebu, 331 km sa daan mula Davao."
+  },
+  "emergency": {
+    "eyebrow": "03 · Emerhensiya",
+    "heading": "Kapag tumataas ang ilog",
+    "intro": "Diretso sa Pasipiko nakaharap ang panahon sa Tandag — mga {rainfall} mm ng ulan bawat taon, karamihan sa pagitan ng Nobyembre at Pebrero, at walang tunay na tag-araw na maaasahan.",
+    "hotlines": "Mga hotline",
+    "callAria": "Tawagan ang {organisation} sa {number}",
+    "beforeSeason": "Bago ang panahon ng bagyo",
+    "pendingTitle": "Mga lokal na hotline",
+    "pendingBody": "Hinahanapan pa namin ng mapagkakatiwalaang pinagmulan ang mga numero ng {offices}. Ang paglalathala ng numerong hindi namin masuri ang dahilan kung bakit may tumatawag sa patay na linya sa gitna ng bagyo. Nagpo-post ang tanggapan ng disaster office ng lungsod ng kasalukuyang numero sa kanilang pahina.",
+    "pendingCta": "Pahina ng City DRRM office"
+  },
+  "contact": {
+    "eyebrow": "05 · Makipag-ugnayan",
+    "heading": "Paano makarating sa City Hall",
+    "viewHotlines": "Mga hotline sa emerhensiya",
+    "phoneLabel": "Telepono",
+    "emailLabel": "Email",
+    "addressLabel": "Address",
+    "phoneHours": "Oras ng tanggapan, Lunes hanggang Biyernes",
+    "emailResponse": "Hindi garantisado ang pagsagot",
+    "addressNote": "bubukas sa Google Maps",
+    "placeholderTag": "pansamantala",
+    "placeholderNote": "Pansamantalang halimbawa — hindi ito gumagana. Huwag itong gamitin.",
+    "placeholderNotice": "Wala pa kaming napatunayang numero ng telepono o email address para sa {office}, kaya pansamantalang halimbawa lang ang dalawang nasa ibaba — hindi ito totoo at walang maaabot dito. Kung alam mo ang mga nailathalang numero at address, ipadala ang mga ito sa {email} at papalitan namin ang mga ito sa parehong araw."
+  },
+  "footer": {
+    "about": "Gawa ng mga Tandaganon para sa Tandag. Binibigyan ng kapangyarihan ang mga taga-Tandag sa pamamagitan ng malinaw na akses sa mga serbisyo, programa at pondong publiko ng pamahalaan.",
+    "pages": "Mga pahina",
+    "resources": "Mga mapagkukunan",
+    "costLine": "Halaga sa Mamamayan ng {city} = ₱0",
+    "volunteer": "Sumama bilang boluntaryo",
+    "contributeCode": "Mag-ambag ng code",
+    "network": "Bahagi ng network ng {network}",
+    "copyright": "© 2026 {host}. Nakalaan ang lahat ng karapatan.",
+    "sourceCode": "Source code",
+    "version": "Bersyon ng portal"
+  },
+  "resources": {
+    "openData": "Open Data Philippines",
+    "foi": "Kalayaan sa Impormasyon (FOI)",
+    "sangguniangPanlungsod": "Sangguniang Panlungsod",
+    "lguFacebook": "Facebook ng LGU Tandag",
+    "blgf": "Portal ng BLGF",
+    "cmci": "Portal ng CMCI ng DTI",
+    "philgeps": "PhilGEPS",
+    "govph": "Opisyal na Gov.PH"
+  },
+  "search": {
+    "heading": "Maghanap",
+    "resultsFor": "Mga resulta para sa “{query}”",
+    "resultCount": "{count, plural, =0 {Walang resulta} one {1 resulta} other {# na resulta}}",
+    "empty": "Mag-type ng kahit ano para maghanap sa portal.",
+    "noResults": "Walang tumugma sa “{query}” — subukan ang “permit”, “tax” o “baha”.",
+    "backHome": "Bumalik sa home page"
+  },
+  "notFound": {
+    "heading": "Hindi mahanap ang pahina",
+    "body": "Wala ang pahinang iyon sa portal na ito. Maaaring nailipat na ito, o hindi pa ito nagagawa.",
+    "backHome": "Bumalik sa home page"
+  },
+  "error": {
+    "heading": "May nangyaring mali",
+    "body": "Hindi na-load ang pahinang ito. Hindi apektado ang ibang bahagi ng portal.",
+    "retry": "Subukang muli"
+  }
+}

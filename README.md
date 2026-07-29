@@ -315,10 +315,17 @@ _City facts sourced from [Wikipedia: Tandag](https://en.wikipedia.org/wiki/Tanda
 
 Contributions are welcome — including from non-developers. Corrections to city information, new service guides, and Filipino translations are all valuable, and most of them are a markdown file rather than code.
 
-- **Branches:** `main` (production), `development` (integration). Cut feature branches from `development`.
-- **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) with a scope, enforced by commitlint — e.g. `feat(services): add business permit renewal guide`.
+**Start here: [CONTRIBUTING.md](CONTRIBUTING.md)** — setup, the content model, code standards, and the pull-request checklist.
+
+By taking part you agree to the **[Code of Conduct](CODE_OF_CONDUCT.md)**. Please read its accuracy section before contributing any city data: on a civic portal a wrong hotline is dialled in an emergency, so unsourced figures are treated as a conduct matter rather than a review note.
+
+The short version:
+
+- **Cite the record.** Every published figure must trace to the city portal, the PSA, or another public record. Wikipedia is a finding aid, not an authority — cite through it.
+- **Branches:** `main` is the trunk. Cut `feature/<slug>` or `fix/<slug>` from it and open the PR against it. There is no `development` branch.
+- **Commits:** [Conventional Commits](https://www.conventionalcommits.org/), enforced by commitlint — e.g. `feat(services): add business permit renewal guide`.
 - **Before opening a PR:** the five-command quality gate above must pass.
-- Found something wrong with the city data? Open an issue rather than guessing.
+- Found something wrong with the city data? Open an issue rather than guessing. "This looks wrong and I do not know the right value" is a useful issue.
 
 ---
 

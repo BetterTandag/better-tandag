@@ -1,0 +1,91 @@
+# Emergency.
+#
+# The local numbers below are supplied by a resident contributor. They could NOT
+# be traced to a public posting — tandag.gov.ph did not resolve when last
+# checked — so they ship with their provenance stated plainly above the list
+# rather than dressed up as official. That is the deal: publish, but say where
+# it came from and when it was last looked at.
+#
+# `provenance.lastCheckedAt` is rendered on the page. Bump it whenever the
+# numbers are re-checked; a stale date on an emergency number is its own hazard.
+# If a number is ever confirmed against a City / PNP / BFP posting, add the URL
+# to that hotline's `source.url` and it becomes a citation link.
+
+provenance:
+  lastCheckedAt: '2026-07-28'
+  note:
+    en: >-
+      Supplied by a resident contributor and last checked on the date below.
+      Save them to your phone now, not during the storm — and tell us at once if
+      a number has changed.
+    fil: >-
+      Galing sa isang residenteng nag-ambag at huling tiningnan sa petsang nasa
+      ibaba. I-save na ito sa inyong telepono ngayon, hindi sa gitna ng bagyo —
+      at sabihan kaagad kami kung may numerong nagbago.
+
+hotlines:
+  - organisation:
+      en: 'City DRRM Office'
+      fil: 'Tanggapan ng City DRRM'
+    role:
+      en: 'Flooding, evacuation, storm updates'
+      fil: 'Pagbaha, paglikas, balita sa bagyo'
+    numbers: ['0907 299 3793', '0956 739 5623']
+    source:
+      label:
+        en: 'Resident contributor — not yet confirmed against a public posting'
+        fil: 'Residenteng nag-ambag — hindi pa nakumpirma sa opisyal na post'
+
+  - organisation:
+      en: 'PNP Tandag'
+      fil: 'PNP Tandag'
+    role:
+      en: 'Police · crime, road incidents'
+      fil: 'Pulisya · krimen, aksidente sa daan'
+    numbers: ['0998 598 7378', '0950 707 3402']
+    source:
+      label:
+        en: 'Resident contributor — not yet confirmed against a public posting'
+        fil: 'Residenteng nag-ambag — hindi pa nakumpirma sa opisyal na post'
+
+  - organisation:
+      en: 'BFP Tandag'
+      fil: 'BFP Tandag'
+    role:
+      en: 'Fire and rescue'
+      fil: 'Sunog at pagsagip'
+    numbers: ['0931 721 8770', '0955 710 7810', '0912 362 3362']
+    source:
+      label:
+        en: 'Resident contributor — not yet confirmed against a public posting'
+        fil: 'Residenteng nag-ambag — hindi pa nakumpirma sa opisyal na post'
+
+  - organisation:
+      en: 'National emergency line'
+      fil: 'Pambansang linya sa emerhensiya'
+    role:
+      en: 'Anywhere in the Philippines, any network'
+      fil: 'Kahit saan sa Pilipinas, kahit anong network'
+    numbers: ['911']
+    emphasis: true
+    source:
+      label:
+        en: 'Official Gazette — list of government hotlines'
+        fil: 'Official Gazette — listahan ng mga hotline ng pamahalaan'
+      url: 'https://www.gov.ph/the-government/hotlines/'
+
+# Every office on the page now has a number. Add an entry here the moment one is
+# withdrawn as unreliable — naming the gap beats leaving a dead number up.
+pendingOffices: []
+
+preparedness:
+  - en: 'Know your evacuation centre — ask at the barangay hall, not on the day of the storm.'
+    fil: 'Alamin ang inyong evacuation centre — magtanong sa barangay hall, hindi sa araw mismo ng bagyo.'
+  - en: 'Photograph IDs, land titles and permits; keep them in a sealed bag.'
+    fil: 'Kunan ng litrato ang mga ID, titulo ng lupa at permiso; itago sa selyadong supot.'
+  - en: 'Three days of water, food, batteries and a charged power bank.'
+    fil: 'Tatlong araw na tubig, pagkain, baterya at puno ang power bank.'
+  - en: 'Agree a meeting point with family for when signal drops.'
+    fil: 'Magkasundo ng tagpuan kasama ang pamilya kapag nawala ang signal.'
+  - en: "Follow PAGASA bulletins and the city's own advisories over rumour."
+    fil: 'Sundin ang mga bulletin ng PAGASA at ang abiso ng lungsod, hindi ang tsismis.'
