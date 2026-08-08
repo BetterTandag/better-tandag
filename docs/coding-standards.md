@@ -135,7 +135,8 @@ historical figure that reaches the page through a cited record in `content/`.
 ## Styling & design system
 
 - **Tailwind CSS v4, configured in CSS** — `@import 'tailwindcss'` plus `@theme` in `src/app/globals.css`.
-  There is no `tailwind.config.js`.
+  ⚠️ **Never create `tailwind.config.ts` or `tailwind.config.js`** — those are v3, v4 ignores them silently, and
+  a theme "change" that lands in one is a change that never happened. No JavaScript-based config.
 - **Named tokens only.** `bg-primary-700`, `text-ink-secondary`, `gap-4`. **Hardcoded hex/rgb/hsl and arbitrary
   values (`bg-[#16643c]`, `text-[13px]`) fail the build** — `src/lib/guardrails.test.ts` scans for them. A
   colour with no token means the ramp is incomplete: extend `@theme`, don't inline a hex.
@@ -155,6 +156,12 @@ historical figure that reaches the page through a cited record in `content/`.
   container — the page body never scrolls horizontally.
 - Prose blocks use `@tailwindcss/typography`, not ad-hoc heading styles. Body text stays at a ~16px floor;
   civic information is read by people of every age.
+- **Tailwind for all styling — no inline `style` attributes.** The one exception is a genuinely dynamic value
+  that cannot be a token (a computed chart dimension), and it needs a comment saying why.
+- **Lucide React is the only icon library.** Don't add a second one, and don't paste a raw SVG where a Lucide
+  icon exists.
+- **Light mode first, dark mode as an option.** The light palette is the design; dark is derived from the same
+  semantic roles, never a separate set of hardcoded colours.
 - `globals.css` declares `@source '../../node_modules/@bettergov/kapwa/dist'` so Tailwind scans Kapwa's
   compiled output. Removing that line silently drops Kapwa's styles from the build.
 
@@ -205,9 +212,82 @@ route done.
 
 ## Naming
 
-React components PascalCase in PascalCase files (`ServiceCard.tsx`); non-component modules kebab-case
-(`lgu-config.ts`); hooks `use-*.ts` exporting `useX`; route folders kebab-case matching the URL; constants
-SCREAMING_SNAKE_CASE. No `I` prefix on interfaces.
+React components PascalCase in PascalCase files (`ServiceCard.tsx`), **functional components only**;
+non-component modules kebab-case (`lgu-config.ts`); hooks `use-*.ts` exporting `useX`; route folders kebab-case
+matching the URL; functions camelCase; constants SCREAMING_SNAKE_CASE. Types PascalCase with no `I` prefix —
+cross-feature shapes in `src/types/<feature>.ts`, local shapes stay local.
+
+## Component structure — colocation, and the three tiers
+
+A component's _location_ encodes how widely it is used. Getting that wrong is the most common way a component
+tree turns into a flat grab-bag nobody can safely delete from.
+
+**Never place a component at the root of `components/` if only one parent uses it.** The three tiers, narrowest
+first:
+
+| Tier               | Where                                                              | Promote to it when                                                                   |
+| ------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| **Sub-component**  | Inside its parent's feature folder, or a named subfolder within it | Used by exactly one parent                                                           |
+| **Feature-shared** | `_shared/` inside that feature folder                              | Reused by two or more components **within the same feature**                         |
+| **Global shared**  | `components/ui/`                                                   | Reused **across multiple features**, and generic enough to carry no feature coupling |
+
+A component moves outward only when the reuse is real and present — not because it might be reused later.
+`_shared/` exists precisely so feature-wide reuse doesn't force a premature promotion to `components/ui/`.
+
+```
+src/components/
+  ui/                        ← global shared: Container, Section, SkipLink, BackToTop
+  home/                      ← a feature
+    Hero.tsx
+    _shared/                 ← shared within `home` only
+      SectionHeader.tsx
+    stats/                   ← related sub-components, grouped
+      StatBand.tsx
+```
+
+- **Group related sub-components under a named subfolder** when a parent grows more than two or three of them.
+- **Keep feature-shared components decoupled from any single parent** — if it only makes sense next to one
+  caller, it isn't `_shared/`, it's a sub-component.
+- **Keep global shared components generic.** A component in `components/ui/` that imports from a feature, or
+  names one in its props, belongs back inside that feature.
+- **Avoid unnecessary deep nesting.** Folder names describe the feature or domain, not the file type.
+
+### Modals
+
+Live in a `modals/` subfolder inside the feature that opens them. **Omit "Modal" from the filename only** —
+`modals/AddContact.tsx` — and **keep it in the exported name**:
+
+```ts
+export function AddContactModal() {}
+```
+
+```ts
+import { AddContactModal } from './modals/AddContact';
+```
+
+### Route structure mirrors the same idea
+
+**Group sub-pages under their parent route folder.** If a page is conceptually a child of another page, it
+lives inside the parent's folder — the URL and the filesystem agree, and the parent's `layout.tsx` applies
+without a second thought.
+
+```
+src/app/[locale]/services/page.tsx              ✅  /services
+src/app/[locale]/services/[category]/page.tsx   ✅  /services/health
+src/app/[locale]/services-health/page.tsx       ❌  flat, and the layout doesn't nest
+```
+
+## Machinery this portal deliberately does not have
+
+Four things a general Next.js product would reach for are absent here on purpose. Recorded so the difference
+reads as a decision rather than an oversight — **don't introduce any of them without an explicit ask.**
+
+| Absent                                                                   | Why                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A database / ORM** (Prisma, migrations, server components querying it) | `content/` is the data layer and `src/lib/content.ts` is the only module that reads it. A portal whose content is files in the repo is reviewable, forkable, and correctable by a non-engineer — that is the architecture, not a limitation to grow out of                  |
+| **shadcn/ui**                                                            | `@bettergov/kapwa` is the component library. Prefer a Kapwa component over a bespoke one; match its API shape when you must write your own                                                                                                                                  |
+| **Server Actions**, `{ success, data, error }` returns, toast errors     | The portal is public, read-only, and collects no personal data. **If an intake surface ever ships**, a Server Action is still the right mechanism — Zod-validated at the boundary, rate-limited, storing no resident personal data. It is not an excuse to add an API route |
+| **API routes** for webhooks, uploads, long-running work                  | None of those surfaces exist. Route Handlers under `src/app/api/` are for what a Server Component genuinely cannot do — never to read `content/`                                                                                                                            |
 
 ## Testing
 

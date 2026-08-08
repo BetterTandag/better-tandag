@@ -61,12 +61,12 @@ describe('self-containment', () => {
    * dead link for everyone else.
    *
    * What that rules out is a reference to a SIBLING directory: `context/`,
-   * `references/`, or another portal's folder. Relative imports that stay
+   * `references/`, or the other portal's folder. Relative imports that stay
    * inside the repo (`../../package.json` from `src/lib/`) are fine and are not
    * matched here.
    */
   const OUTWARD =
-    /(?:^|[\s('"`[])(?:\.\.\/)*(?:context|references|betterGeneraltrias|better-lgu-directory)\//;
+    /(?:^|[\s('"`[])(?:\.\.\/)*(?:context|references|better-tago)\//;
 
   it('references no directory outside this repository', () => {
     expect(offenders(SRC_FILES, OUTWARD)).toEqual([]);
