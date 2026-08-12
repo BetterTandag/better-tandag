@@ -27,11 +27,35 @@ describe('lguConfig', () => {
 });
 
 describe('absoluteUrl', () => {
+  /*
+   * Derived from the configured domain, not repeated as a literal.
+   *
+   * These two asserted `https://bettertandag.org/...` outright, and when the
+   * host was corrected to the `www` one the deployment actually serves, they
+   * failed — pointing at the fix rather than at a defect. A test that restates
+   * the value under test only proves the value has not changed, which is not
+   * what either of these is for: what they check is that a path is joined to
+   * the domain exactly once, with exactly one slash between them.
+   *
+   * `guardrails.test.ts` § *the canonical host* is what pins the value itself,
+   * in one place, with the reason attached.
+   */
+  const domain = lguConfig.portal.domain;
+
   it('builds a canonical URL from the configured domain', () => {
-    expect(absoluteUrl('/en')).toBe('https://bettertandag.org/en');
+    expect(absoluteUrl('/en')).toBe(`${domain}/en`);
   });
 
   it('tolerates a missing leading slash', () => {
-    expect(absoluteUrl('fil')).toBe('https://bettertandag.org/fil');
+    expect(absoluteUrl('fil')).toBe(`${domain}/fil`);
+  });
+
+  it('never doubles the slash, whichever side carries it', () => {
+    // The failure mode the two cases above exist to catch, stated directly:
+    // `absoluteUrl` strips a trailing slash from the domain and normalises the
+    // leading one on the path, so neither a bare nor a slashed argument can
+    // produce `//`.
+    expect(absoluteUrl('/en')).toBe(absoluteUrl('en'));
+    expect(absoluteUrl('/en')).not.toContain('.org//');
   });
 });

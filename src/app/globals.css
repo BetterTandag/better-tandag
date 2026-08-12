@@ -291,21 +291,50 @@
    * viewport and ~232px at 1280px, and the type this expression yields at 181px
    * (7.8px) is not readable by anyone. Two ~394px columns at 1024px are.
    *
-   * The divisor is the MEASURED width of the string in em, plus headroom, not
-   * a guess. In Space Grotesk Bold the English line is 16.531em wide and the
-   * Filipino "Halaga sa Mamamayan ng Tandag = ₱0" is 18.814em, so Filipino is
-   * the binding case and 19.2 is that plus ~2%. `2rem` is the pill's own
-   * `px-4`, subtracted before the division because the padding is fixed while
-   * the type is not.
+   * ## 🔴 Rewritten 2026-08-12. The old form could not be made to work.
    *
-   * Rendered against the real footer, Filipino clears its column by 3.0–5.6px
-   * at every one of 320 / 390 / 768 / 1024 / 1280 / 1440.
+   * It was `calc((100cqi - 2rem) / 19.2)`: subtract the pill's fixed `px-4`,
+   * then divide by the measured em-width of the longest string. Two things were
+   * wrong with it, and only the first is a typo.
+   *
+   * **The recorded em-widths were low.** It claimed 16.531em (en) and 18.814em
+   * (fil), making 19.2 "Filipino plus ~2%". Measured against the rendered
+   * element — `Range.getBoundingClientRect()` on the pill's own text node, in
+   * Space Grotesk 700, `letter-spacing: normal`, webfont confirmed loaded —
+   * they are **17.914em** and **19.286em**. So 19.2 sat *below* the binding
+   * case, and Filipino rendered 257px inside a 256px column at 320px.
+   *
+   * 🔴 **The deeper problem: that em-width is not a constant.** Glyph advances
+   * round to device pixels, so the ratio GROWS as the type shrinks — measured
+   * across the six tested widths it runs from 19.33em at 18px down to 21.08em
+   * at 10.15px. Shrinking the font to make the line fit makes the line
+   * proportionally wider, which is a feedback loop, and no single divisor
+   * closes it: 19.7, 21.5 and 20.5 were each tried against all twelve
+   * locale/width pairs and each still overflowed somewhere.
+   *
+   * **What breaks the loop is putting the padding inside the ratio.** With a
+   * fixed `2rem`, the padding is 14% of a 232px column and only 4% of an 819px
+   * one, so the sum being solved for changes shape with the column. Padding in
+   * `em` (see `.cost-pill` below) makes the whole pill scale together:
+   *
+   *     pill = font x (text-em + 2 x pad-em)
+   *
+   * so `font = 100cqi / D` with `D` >= that bracket keeps the pill inside its
+   * column at every width by construction. With `pad-em: 0.9`, `D = 23.8`
+   * covers a text ratio up to 22.0em against a worst measured 21.08em.
+   *
+   * Verified across en and fil at 320 / 390 / 768 / 1024 / 1280 / 1440: the
+   * pill clears the narrower of its column and its buttons by **>= 11px**
+   * everywhere, on one line, with a minimum type size of 9.75px.
+   *
+   * At the 1.125rem ceiling the padding computes to 16.2px, within a pixel of
+   * the `px-4` it replaces — so the large end looks as it did.
    *
    * The floor is a guard, not a size anyone should hit: it only engages if the
    * column ever falls below ~147px, which the current footer never does. The
    * ceiling is the same in reverse. What actually renders is the middle term.
    */
-  --text-cost: clamp(0.375rem, calc((100cqi - 2rem) / 19.2), 1.125rem);
+  --text-cost: clamp(0.375rem, calc(100cqi / 23.8), 1.125rem);
   --text-cost--line-height: 1.25;
   /*
    * There is no `--text-emergency` any more. The national line was set at
@@ -780,6 +809,23 @@
    AND motion allowed — so `prefers-reduced-motion: reduce` and a wide viewport
    land on exactly the same static row with no second rule to keep in step.
    ========================================================================== */
+
+/*
+ * The cost pill's horizontal padding, in `em` rather than a fixed `px-4`.
+ *
+ * This is the half of the `--text-cost` fix that lives on the element. Scaling
+ * the padding with the type is what lets one divisor hold the pill inside its
+ * column at every width — the reasoning, the measurements and the three fixed
+ * divisors that failed are all recorded beside `--text-cost` above.
+ *
+ * A class rather than an arbitrary utility because `bg-[…]`-style values are a
+ * review failure here and `guardrails.test.ts` fails the build on them; `em` is
+ * also not expressible as a spacing token, since the whole point is that it
+ * tracks the font size rather than the spacing ramp.
+ */
+.cost-pill {
+  padding-inline: 0.9em;
+}
 
 @keyframes hotline-scroll {
   from {

@@ -2,7 +2,7 @@
 
 A community-led, open-source civic portal for the **City of Tandag, Surigao del Sur, Philippines** — built to give residents fast, clear, and modern access to government services, officials, budgets, planning documents, and public information.
 
-Live site: **[bettertandag.org](https://bettertandag.org)**
+Live site: **[www.bettertandag.org](https://www.bettertandag.org)**
 
 ---
 

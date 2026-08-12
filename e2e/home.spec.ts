@@ -1440,10 +1440,23 @@ test.describe('landing page', () => {
     test('marquees only when the content actually overflows', async ({
       page,
     }) => {
-      // Gated on measured overflow, not a breakpoint. A breakpoint is a guess
-      // at the content width, and it guessed wrong in both directions: one run
-      // is 1277px in English and 1427px in Filipino, so the old 1120px rule
-      // left a 150-300px band where the row overflowed and sat still.
+      /*
+       * Gated on measured overflow, not a breakpoint. A breakpoint is a guess
+       * at the content width, and it guessed wrong in both directions, so the
+       * old 1120px rule left a band where the row overflowed and sat still.
+       *
+       * ⚠️ **Run widths re-measured 2026-08-12.** One run is **1336px in
+       * English and 1488px in Filipino**; this table was built against 1277px
+       * and 1427px, which is why `fil @ 1440` expected a static row and got a
+       * marquee. At 1488px the Filipino run genuinely overflows a 1440px
+       * viewport by 48px — the component was right and the expectation was
+       * stale.
+       *
+       * The static case for Filipino therefore has to be a viewport wider than
+       * its content, and 1600 is the first round step that clears 1488. The
+       * 1440 case is kept, flipped to `true`, so the pair still brackets the
+       * boundary rather than only testing one side of it.
+       */
       await page.emulateMedia({ reducedMotion: 'no-preference' });
 
       for (const [locale, width, animated] of [
@@ -1453,7 +1466,8 @@ test.describe('landing page', () => {
         // Filipino is the longer string, so it still marquees where English
         // has already gone static. Same rule, different content.
         ['fil', 1280, true],
-        ['fil', 1440, false],
+        ['fil', 1440, true],
+        ['fil', 1600, false],
       ] as const) {
         await page.setViewportSize({ width, height: 844 });
         await page.goto(`/${locale}`);
@@ -1508,7 +1522,23 @@ test.describe('landing page', () => {
           ticker
         );
 
-      expect(await playState()).toBe('running');
+      /*
+       * 🔴 Move the cursor OFF the bar before asserting it runs.
+       *
+       * This test used to assert `running` straight after `goto`, and failed:
+       * the bar is the first thing on the page and occupies (0, 0, 390, 29),
+       * while Playwright parks the cursor at (0,0) and never moves it. The
+       * pointer was therefore inside `.hotline-viewport` from the first frame,
+       * `:hover` matched, and the marquee was legitimately paused before the
+       * test had done anything.
+       *
+       * The app was right and the assertion was wrong — pausing under the
+       * pointer is exactly the WCAG 2.2.2 behaviour the rest of this test goes
+       * on to verify. `(0, 400)` is the same off-bar position the test already
+       * uses to check it resumes.
+       */
+      await page.mouse.move(0, 400);
+      await expect.poll(playState).toBe('running');
 
       // `locator.hover()` cannot be used here: it waits for the element to be
       // stable, and a marquee entry is by definition never stable, so it spins

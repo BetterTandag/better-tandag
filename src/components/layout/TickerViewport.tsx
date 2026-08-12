@@ -44,10 +44,15 @@ export function TickerViewport({
   /*
    * The marquee runs when the content ACTUALLY overflows, not below a fixed
    * breakpoint. A breakpoint is only a guess at the content's width, and here
-   * it guessed wrong in both directions: one run is 1277px in English and
-   * 1427px in Filipino, so a 1120px rule left a 150-300px band where the row
-   * overflowed and sat still. Measuring is exact, and it stays exact when a
+   * it guessed wrong in both directions: a 1120px rule left a band where the
+   * row overflowed and sat still. Measuring is exact, and it stays exact when a
    * hotline is added to the manifest or a longer locale is added later.
+   *
+   * ⚠️ Re-measured 2026-08-12: one run is **1336px in English and 1488px in
+   * Filipino**, not the 1277/1427 recorded when this was written. Nothing here
+   * changed — that is the point of measuring rather than hardcoding — but the
+   * e2e table that DID hardcode those numbers had gone stale and expected a
+   * static row at a width the content still overflows.
    */
   useEffect(() => {
     const viewport = viewportRef.current;

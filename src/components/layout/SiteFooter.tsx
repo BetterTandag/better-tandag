@@ -36,8 +36,12 @@ export async function SiteFooter() {
    * `portal.domain` is the source of truth for which host this is (rule 10);
    * `portal.name` is the source of truth for how it is written. Taking the TLD
    * from one and the label from the other means re-pointing the portal at a
-   * different domain updates this line with no code change, and there is no
-   * literal "bettertandag.org" anywhere in the markup.
+   * different domain updates this line with no code change, and the host is
+   * never written out as a literal anywhere in the markup.
+   *
+   * That last part is now enforced rather than asserted: `guardrails.test.ts`
+   * § *the canonical host* fails on the host appearing anywhere in `src/`,
+   * which is why this comment describes it instead of spelling it out.
    */
   const host = new URL(lguConfig.portal.domain).hostname.replace(/^www\./, '');
   const brandedHost = [lguConfig.portal.name, ...host.split('.').slice(1)].join(
@@ -197,8 +201,13 @@ export async function SiteFooter() {
           {/* `w-fit`, not `block`: the pill hugs its text. `--text-cost` caps
               at 1.125rem, so from ~1200px up the line is narrower than the
               column and a full-width pill left a visible run of empty ground
-              after the "₱0". */}
-          <p className="mb-4 w-fit rounded-full bg-success-900 px-4 py-2 font-display text-cost font-bold whitespace-nowrap text-success-400">
+              after the "₱0".
+
+              `cost-pill` — em-based inline padding — replaces `px-4`. A fixed
+              padding is 14% of a 232px column and 4% of an 819px one, which is
+              what made a single `--text-cost` divisor unable to keep the pill
+              inside its column at every width. Full reasoning in globals.css. */}
+          <p className="cost-pill mb-4 w-fit rounded-full bg-success-900 py-2 font-display text-cost font-bold whitespace-nowrap text-success-400">
             {t('costLine', { city: lguConfig.lgu.shortName })}
           </p>
 

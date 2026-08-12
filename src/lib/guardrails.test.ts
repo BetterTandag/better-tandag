@@ -114,6 +114,70 @@ describe('self-containment', () => {
   });
 });
 
+describe('the canonical host', () => {
+  /*
+   * 🔴 `portal.domain` must name the host the deployment ACTUALLY serves, and
+   * that host is `www`.
+   *
+   * This shipped wrong. The value was the apex, written before the domain was
+   * pointed; the hosting then settled on `www` and 308-redirects the apex to
+   * it. Nothing reconciled the two, because nothing read this key — so every
+   * page told crawlers its canonical URL was one that redirects away from the
+   * page serving it, and every sitemap entry plus the robots.txt `Sitemap:`
+   * directive named the same wrong host:
+   *
+   *   https://www.bettertandag.org/en  →  <link rel="canonical"
+   *                                         href="https://bettertandag.org/en">
+   *   https://bettertandag.org/en      →  308 https://www.bettertandag.org/en
+   *
+   * Everything absolute derives from this one key — `absoluteUrl()`,
+   * `metadataBase` in the locale layout, `sitemap.ts` and `robots.ts` — which
+   * is why the symptom was portal-wide and the correction is a single value.
+   *
+   * This is a unit assertion and not an e2e one deliberately. Comparing
+   * `<link rel="canonical">` against `location.origin` would be the honest
+   * check, but the suite runs against `localhost` while `metadataBase` is the
+   * production domain — it would fail on every developer machine.
+   */
+  const domain: string = JSON.parse(
+    readFileSync(path.join(ROOT, 'config', 'lgu.config.json'), 'utf8')
+  ).portal.domain;
+
+  it('is the www host the deployment serves, not the apex it redirects from', () => {
+    expect(domain).toBe('https://www.bettertandag.org');
+  });
+
+  it('is https, has no trailing slash and no path', () => {
+    // `absoluteUrl()` strips one trailing slash, so a slash here is survivable
+    // there and not in `metadataBase` — which is exactly the kind of asymmetry
+    // that produces a double slash in half the emitted URLs and not the rest.
+    const url = new URL(domain);
+    expect(url.protocol).toBe('https:');
+    expect(url.pathname).toBe('/');
+    expect(domain.endsWith('/')).toBe(false);
+  });
+
+  it('is the ONLY place the host is written down', () => {
+    /*
+     * The bug was survivable in one edit precisely because everything absolute
+     * derives from this key. A second hardcoded host would break that, and it
+     * is the failure mode that turns a one-line fix into a hunt.
+     *
+     * The footer is the one legitimate reader: it strips `www.` for display, so
+     * a resident still sees the bare host. It derives that from this key rather
+     * than hardcoding it, which is why it needs no exemption — and this scan
+     * caught the one place that still spelled the host out, in a comment
+     * claiming it did not.
+     *
+     * Deliberately case-SENSITIVE. The footer composes a branded display form
+     * with the portal's own capitalisation out of `portal.name` plus the TLD;
+     * that form is derived, legitimate, and not what this is hunting for. What
+     * it hunts is the host as a URL would carry it.
+     */
+    expect(offenders(SRC_FILES, /\bbettertandag\.org\b/)).toEqual([]);
+  });
+});
+
 describe('design tokens', () => {
   /*
    * Colour belongs to the @theme layer in globals.css and reaches components
