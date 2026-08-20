@@ -89,6 +89,60 @@ either.
 - Route Handlers under `src/app/api/` exist only for what a Server Component genuinely can't do. Don't create
   an internal API route to read `content/` — call the loader directly.
 
+### Calling something outside this repository
+
+Almost nothing does. `content/` is files and `config/` is a file, so for most of a portal's life `src/`
+contains **no `fetch` at all**. That makes the first external call the pattern every later one copies,
+and it is worth getting right once — BetterTago's is `src/lib/weather.ts`, written to be read as one.
+
+```ts
+export async function getThing(): Promise<Thing | null> {
+  'use cache';
+  cacheLife('thing'); // a NAMED profile, declared in next.config.ts
+  cacheTag('thing');
+
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!response.ok) return null;
+
+    const parsed = schema.safeParse(await response.json());
+    return parsed.success ? shape(parsed.data) : null;
+  } catch {
+    return null;
+  }
+}
+```
+
+Six rules, and every one of them has a specific production failure behind it:
+
+1. **Time-box every request** with `AbortSignal.timeout`, and **pick the bound from a measurement, not
+   a feeling.** A cold Node `fetch` pays DNS and a TLS handshake that a warm one and a `curl` do not —
+   2.5s looked generous, sat on top of the cold-start distribution, and made a widget that never once
+   rendered while the upstream was perfectly healthy.
+2. **Validate at the boundary** with Zod. The body is `unknown` until a schema says otherwise, and **a
+   200 with the wrong shape is a failure, not data** — the case a `response.ok` check misses, and the
+   one that puts `undefined` on a civic page.
+3. **Return `null`, never throw.** A DNS error, an abort and a schema mismatch are the same event to a
+   reader: there is nothing to show. **A third-party outage is not a page outage.**
+4. **Opt into the cache, and check WHERE the caller renders.** Under `cacheComponents` nothing is
+   cached implicitly, so an uncached read inside a layout is uncached data in `<html><body>` on every
+   route with no `<Suspense>` around it — which the build refuses to prerender. Give the profile an
+   `expire` too, so a dead upstream cannot leave a stale value looking current.
+5. **Split the module.** `'use cache'` only resolves inside the Next runtime, so a function carrying it
+   cannot be unit-tested. Keep an uncached half holding everything that can fail, and a thin cached
+   wrapper components call.
+6. **Never let CI contact the upstream** — and note that `page.route()` does **not** stub a server-side
+   fetch. Playwright intercepts the browser; a loader running on the server will quietly hit the real
+   API and pass or fail on whether it happened to be up. Mock at the `fetch` boundary in units.
+
+Two more that are not about resilience:
+
+- **Qualify upstream timestamps before storing or parsing them.** A naive `"2026-08-21T00:30"` is
+  parsed against the _runtime's_ zone, so it means one instant on a developer machine and another on a
+  UTC server. Append the offset the payload gives you, and pin the test suite's `TZ`.
+- **If what you render carries authority a reader might act on** — weather, hazard, health, a fee —
+  say where it came from, when, and what it is not, inline and beside the value.
+
 ## Content pipeline
 
 - **`content/` is the data layer, and `src/lib/content.ts` is the only module that reads it.** No component,
